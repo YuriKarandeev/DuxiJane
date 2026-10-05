@@ -1,0 +1,2127 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Blogger Planner · Планировщик контента</title>
+<style>
+:root {
+  --bg: #fafafa;
+  --bg-elev: #ffffff;
+  --bg-col: #f5f5f7;
+  --text: #1a1a1a;
+  --text-muted: #8a8a8e;
+  --border: #ececec;
+  --shadow: 0 1px 2px rgba(0,0,0,.04), 0 4px 12px rgba(0,0,0,.04);
+  --shadow-hover: 0 4px 16px rgba(0,0,0,.08);
+  --accent: #e1306c;
+  --accent-2: #bd081c;
+  --radius: 14px;
+  --radius-sm: 10px;
+}
+[data-theme="dark"] {
+  --bg: #0f0f10;
+  --bg-elev: #1a1a1c;
+  --bg-col: #141416;
+  --text: #f5f5f7;
+  --text-muted: #8a8a8e;
+  --border: #26262a;
+  --shadow: 0 1px 2px rgba(0,0,0,.4), 0 4px 12px rgba(0,0,0,.3);
+  --shadow-hover: 0 4px 16px rgba(0,0,0,.5);
+}
+
+* { box-sizing: border-box; margin: 0; padding: 0; }
+
+body {
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "Inter", system-ui, sans-serif;
+  background: var(--bg);
+  color: var(--text);
+  min-height: 100vh;
+  transition: background .25s ease, color .25s ease;
+  -webkit-font-smoothing: antialiased;
+}
+
+/* ============ ШАПКА ============ */
+header {
+  position: sticky;
+  top: 0;
+  z-index: 50;
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  padding: 14px 24px;
+  background: var(--bg-elev);
+  border-bottom: 1px solid var(--border);
+  backdrop-filter: blur(12px);
+}
+.logo {
+  font-weight: 700;
+  font-size: 18px;
+  letter-spacing: -0.02em;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  flex-shrink: 0;
+}
+.logo-dot {
+  width: 10px; height: 10px; border-radius: 50%;
+  background: linear-gradient(135deg, var(--accent), var(--accent-2));
+}
+.stats {
+  display: flex;
+  gap: 16px;
+  margin-left: auto;
+  font-size: 13px;
+  color: var(--text-muted);
+  white-space: nowrap;
+}
+.stats b { color: var(--text); font-weight: 600; }
+.stats .danger { color: #ff3b30; }
+
+.header-actions { display: flex; gap: 8px; }
+
+/* ============ КНОПКИ ============ */
+button {
+  font-family: inherit;
+  cursor: pointer;
+  border: none;
+  border-radius: var(--radius-sm);
+  font-size: 14px;
+  font-weight: 500;
+  transition: all .15s ease;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+}
+.btn-primary {
+  background: linear-gradient(135deg, var(--accent), var(--accent-2));
+  color: #fff;
+  padding: 9px 16px;
+  white-space: nowrap;
+}
+.btn-primary:hover { transform: translateY(-1px); box-shadow: var(--shadow-hover); }
+.btn-ghost {
+  background: transparent;
+  color: var(--text);
+  border: 1px solid var(--border);
+  padding: 8px 12px;
+  font-size: 16px;
+}
+.btn-ghost:hover { background: var(--bg-col); }
+.btn-icon {
+  background: transparent;
+  color: var(--text-muted);
+  padding: 4px 8px;
+  font-size: 14px;
+  border-radius: 6px;
+}
+.btn-icon:hover { background: var(--bg-col); color: var(--text); }
+
+/* ============ ТАБЫ ============ */
+.tabs {
+  display: flex;
+  gap: 4px;
+  padding: 4px;
+  background: var(--bg-col);
+  border-radius: var(--radius-sm);
+  margin-left: 8px;
+  flex-shrink: 0;
+}
+.tab {
+  padding: 6px 14px;
+  font-size: 13px;
+  font-weight: 500;
+  border-radius: 7px;
+  background: transparent;
+  color: var(--text-muted);
+  border: none;
+  cursor: pointer;
+  transition: all .15s ease;
+  font-family: inherit;
+  white-space: nowrap;
+}
+.tab:hover { color: var(--text); }
+.tab.active {
+  background: var(--bg-elev);
+  color: var(--text);
+  box-shadow: var(--shadow);
+}
+
+/* ============ ВИДЫ ============ */
+.view { display: none; }
+.view.active { display: block; }
+
+/* ============ ДОСКА ============ */
+.board-wrap {
+  padding: 24px;
+  overflow-x: auto;
+  min-height: calc(100vh - 65px);
+}
+.board {
+  display: flex;
+  gap: 16px;
+  align-items: flex-start;
+  min-width: max-content;
+}
+.column {
+  width: 280px;
+  flex-shrink: 0;
+  background: var(--bg-col);
+  border-radius: var(--radius);
+  padding: 12px;
+  min-height: 200px;
+  transition: background .15s ease;
+}
+.column.drag-over {
+  background: color-mix(in srgb, var(--accent) 8%, var(--bg-col));
+  outline: 2px dashed color-mix(in srgb, var(--accent) 40%, transparent);
+  outline-offset: -4px;
+}
+.column-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 4px 8px 12px;
+  font-size: 13px;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: .04em;
+  color: var(--text-muted);
+}
+.column-count {
+  background: var(--bg-elev);
+  padding: 2px 8px;
+  border-radius: 10px;
+  font-size: 11px;
+  color: var(--text-muted);
+}
+.column-body {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  min-height: 60px;
+}
+
+/* ============ КАРТОЧКА ============ */
+.card {
+  background: var(--bg-elev);
+  border-radius: var(--radius-sm);
+  padding: 12px;
+  box-shadow: var(--shadow);
+  cursor: grab;
+  transition: transform .15s ease, box-shadow .15s ease, opacity .15s ease;
+  border-left: 3px solid var(--border);
+  position: relative;
+}
+.card:hover { box-shadow: var(--shadow-hover); transform: translateY(-1px); }
+.card:active { cursor: grabbing; }
+.card.dragging { opacity: .4; transform: rotate(2deg); }
+.card[data-platform="instagram"] { border-left-color: var(--accent); }
+.card[data-platform="pinterest"] { border-left-color: var(--accent-2); }
+.card[data-platform="both"] { border-left-color: #8a2bbf; }
+
+.card-title {
+  font-size: 14px;
+  font-weight: 600;
+  line-height: 1.35;
+  margin-bottom: 8px;
+  word-break: break-word;
+}
+.card-meta {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  font-size: 11px;
+  color: var(--text-muted);
+  align-items: center;
+}
+.badge {
+  padding: 2px 8px;
+  border-radius: 6px;
+  font-weight: 500;
+  font-size: 11px;
+}
+.badge-plat { background: var(--bg-col); color: var(--text); }
+.badge-date { background: var(--bg-col); }
+.badge-date.overdue { background: #ff3b3020; color: #ff3b30; }
+.badge-date.today { background: #ff950020; color: #ff9500; }
+.badge-priority-high { background: #ff3b3020; color: #ff3b30; }
+.badge-priority-med { background: #ff950020; color: #ff9500; }
+.badge-priority-low { background: #34c75920; color: #34c759; }
+
+.card-actions {
+  position: absolute;
+  top: 8px;
+  right: 8px;
+  display: flex;
+  gap: 2px;
+  opacity: 0;
+  transition: opacity .15s ease;
+}
+.card:hover .card-actions { opacity: 1; }
+.card-actions button {
+  background: var(--bg-elev);
+  color: var(--text-muted);
+  width: 24px; height: 24px;
+  padding: 0;
+  justify-content: center;
+  border-radius: 6px;
+  font-size: 13px;
+}
+.card-actions button:hover { background: var(--bg-col); color: var(--text); }
+
+.empty-hint {
+  text-align: center;
+  font-size: 12px;
+  color: var(--text-muted);
+  padding: 20px 8px;
+  opacity: .6;
+}
+
+/* ============ ТАБЛИЦЫ ============ */
+.table-wrap {
+  padding: 24px;
+  overflow-x: auto;
+}
+.data-table {
+  width: 100%;
+  border-collapse: separate;
+  border-spacing: 0;
+  background: var(--bg-elev);
+  border-radius: var(--radius);
+  overflow: hidden;
+  box-shadow: var(--shadow);
+  min-width: 720px;
+}
+.data-table thead th {
+  text-align: left;
+  font-size: 11px;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: .04em;
+  color: var(--text-muted);
+  padding: 14px 16px;
+  background: var(--bg-col);
+  border-bottom: 1px solid var(--border);
+  white-space: nowrap;
+}
+.data-table tbody td {
+  padding: 12px 16px;
+  font-size: 14px;
+  border-bottom: 1px solid var(--border);
+  vertical-align: middle;
+}
+.data-table tbody tr:last-child td { border-bottom: none; }
+.data-table tbody tr { transition: background .12s ease; }
+.data-table tbody tr:hover { background: var(--bg-col); }
+
+.data-table .col-num {
+  width: 50px;
+  color: var(--text-muted);
+  font-variant-numeric: tabular-nums;
+  font-size: 13px;
+}
+.data-table .col-actions {
+  width: 100px;
+  text-align: right;
+  white-space: nowrap;
+}
+.data-table .cell-empty {
+  text-align: center;
+  color: var(--text-muted);
+  padding: 40px 16px;
+  font-size: 13px;
+}
+
+.cell-nick {
+  font-family: ui-monospace, "SF Mono", Menlo, monospace;
+  font-size: 13px;
+  color: var(--text-muted);
+}
+
+.status-select {
+  font-family: inherit;
+  font-size: 12px;
+  font-weight: 500;
+  padding: 5px 26px 5px 10px;
+  border-radius: 8px;
+  border: 1px solid transparent;
+  cursor: pointer;
+  transition: all .15s ease;
+  appearance: none;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='10' height='10' viewBox='0 0 10 10'%3E%3Cpath fill='%238a8a8e' d='M5 7L1 3h8z'/%3E%3C/svg%3E");
+  background-repeat: no-repeat;
+  background-position: right 9px center;
+  min-width: 150px;
+}
+.status-select:focus { outline: none; }
+
+.status[data-status="write"]     { background: #f0f0f3; color: #4a4a52; }
+.status[data-status="written"]   { background: #e3e8ff; color: #3d4db7; }
+.status[data-status="waiting"]   { background: #fff3d6; color: #a36a00; }
+.status[data-status="received"]  { background: #ffe0cc; color: #b04a00; }
+.status[data-status="shooting"]  { background: #f3d9ff; color: #8a2bbf; }
+.status[data-status="editing"]   { background: #d6ebff; color: #0066cc; }
+.status[data-status="published"] { background: #d4f5d8; color: #1a7d2e; }
+.status[data-status="in-stock"]     { background: #d4f5d8; color: #1a7d2e; }
+.status[data-status="out-of-stock"] { background: #ffe0e0; color: #c22b2b; }
+.status[data-status="need-shoot"]   { background: #fff3d6; color: #a36a00; }
+.status[data-status="shot"]         { background: #f3d9ff; color: #8a2bbf; }
+
+[data-theme="dark"] .status[data-status="write"]     { background: #2a2a2e; color: #b8b8c0; }
+[data-theme="dark"] .status[data-status="written"]   { background: #23283f; color: #93a4ff; }
+[data-theme="dark"] .status[data-status="waiting"]   { background: #3a2f14; color: #f0c060; }
+[data-theme="dark"] .status[data-status="received"]  { background: #3d2410; color: #ff9d52; }
+[data-theme="dark"] .status[data-status="shooting"]  { background: #341a3f; color: #d494ff; }
+[data-theme="dark"] .status[data-status="editing"]   { background: #12293d; color: #6cb8ff; }
+[data-theme="dark"] .status[data-status="published"] { background: #173a1e; color: #7ee08f; }
+[data-theme="dark"] .status[data-status="in-stock"]  { background: #173a1e; color: #7ee08f; }
+[data-theme="dark"] .status[data-status="out-of-stock"] { background: #3d1a1a; color: #ff8585; }
+[data-theme="dark"] .status[data-status="need-shoot"] { background: #3a2f14; color: #f0c060; }
+[data-theme="dark"] .status[data-status="shot"]      { background: #341a3f; color: #d494ff; }
+
+.table-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 16px;
+  padding: 0 4px;
+}
+.table-header h2 {
+  font-size: 18px;
+  font-weight: 600;
+  letter-spacing: -0.01em;
+}
+.table-header .counter {
+  font-size: 13px;
+  color: var(--text-muted);
+}
+
+/* ============ МОДАЛКА ============ */
+.modal-backdrop {
+  position: fixed; inset: 0;
+  background: rgba(0,0,0,.4);
+  backdrop-filter: blur(4px);
+  display: none;
+  align-items: center;
+  justify-content: center;
+  z-index: 100;
+  padding: 16px;
+}
+.modal-backdrop.open { display: flex; }
+.modal {
+  background: var(--bg-elev);
+  border-radius: var(--radius);
+  width: 100%;
+  max-width: 480px;
+  padding: 24px;
+  box-shadow: 0 20px 60px rgba(0,0,0,.3);
+  animation: pop .2s ease;
+  max-height: 90vh;
+  overflow-y: auto;
+}
+@keyframes pop {
+  from { opacity: 0; transform: scale(.96) translateY(8px); }
+  to { opacity: 1; transform: scale(1) translateY(0); }
+}
+.modal h2 {
+  font-size: 18px;
+  margin-bottom: 20px;
+  letter-spacing: -0.01em;
+}
+.field { margin-bottom: 16px; }
+.field label {
+  display: block;
+  font-size: 12px;
+  font-weight: 600;
+  color: var(--text-muted);
+  text-transform: uppercase;
+  letter-spacing: .04em;
+  margin-bottom: 6px;
+}
+.field input,
+.field textarea,
+.field select {
+  width: 100%;
+  font-family: inherit;
+  font-size: 14px;
+  padding: 10px 12px;
+  border-radius: var(--radius-sm);
+  border: 1px solid var(--border);
+  background: var(--bg-col);
+  color: var(--text);
+  transition: border-color .15s ease;
+}
+.field input:focus,
+.field textarea:focus,
+.field select:focus {
+  outline: none;
+  border-color: var(--accent);
+  background: var(--bg-elev);
+}
+.field textarea { resize: vertical; min-height: 70px; }
+.field-row { display: flex; gap: 12px; }
+.field-row .field { flex: 1; }
+
+.modal-actions {
+  display: flex;
+  gap: 8px;
+  justify-content: flex-end;
+  margin-top: 24px;
+}
+/* ============ КАЛЕНДАРЬ ============ */
+.calendar-wrap {
+  padding: 24px;
+  max-width: 1200px;
+  margin: 0 auto;
+}
+.calendar-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 20px;
+  gap: 16px;
+  flex-wrap: wrap;
+}
+.calendar-nav {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+.calendar-nav h2 {
+  font-size: 20px;
+  font-weight: 600;
+  letter-spacing: -0.02em;
+  min-width: 180px;
+  text-align: center;
+  text-transform: capitalize;
+}
+.calendar-weekdays {
+  display: grid;
+  grid-template-columns: repeat(7, 1fr);
+  gap: 8px;
+  margin-bottom: 8px;
+  padding: 0 4px;
+}
+.calendar-weekdays > div {
+  text-align: center;
+  font-size: 11px;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: .06em;
+  color: var(--text-muted);
+  padding: 6px 0;
+}
+.calendar-grid {
+  display: grid;
+  grid-template-columns: repeat(7, 1fr);
+  gap: 8px;
+}
+
+.cal-day {
+  background: var(--bg-elev);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-sm);
+  padding: 8px;
+  min-height: 110px;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  cursor: pointer;
+  transition: all .15s ease;
+  position: relative;
+}
+.cal-day:hover { border-color: color-mix(in srgb, var(--accent) 40%, var(--border)); }
+.cal-day.empty {
+  background: transparent;
+  border: none;
+  cursor: default;
+  pointer-events: none;
+}
+.cal-day.today {
+  border-color: var(--accent);
+  box-shadow: 0 0 0 2px color-mix(in srgb, var(--accent) 20%, transparent);
+}
+.cal-day.weekend {
+  background: color-mix(in srgb, var(--bg-col) 50%, var(--bg-elev));
+}
+
+.cal-day-num {
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--text-muted);
+  margin-bottom: 2px;
+}
+.cal-day.today .cal-day-num {
+  color: var(--accent);
+  font-weight: 700;
+}
+
+.cal-task {
+  font-size: 11px;
+  padding: 4px 6px;
+  border-radius: 6px;
+  background: var(--bg-col);
+  border-left: 3px solid var(--border);
+  color: var(--text);
+  cursor: pointer;
+  line-height: 1.3;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  transition: transform .12s ease, background .12s ease;
+  word-break: break-word;
+}
+.cal-task:hover {
+  transform: translateX(2px);
+  background: color-mix(in srgb, var(--accent) 8%, var(--bg-col));
+}
+.cal-task[data-platform="instagram"] { border-left-color: var(--accent); }
+.cal-task[data-platform="pinterest"] { border-left-color: var(--accent-2); }
+.cal-task[data-platform="both"]      { border-left-color: #8a2bbf; }
+.cal-task.overdue {
+  background: #ff3b3012;
+  color: #ff3b30;
+}
+.cal-task.published {
+  opacity: .5;
+  text-decoration: line-through;
+}
+
+.cal-more {
+  font-size: 10px;
+  color: var(--text-muted);
+  text-align: center;
+  padding: 2px;
+  font-weight: 500;
+}
+
+.calendar-legend {
+  display: flex;
+  gap: 20px;
+  flex-wrap: wrap;
+  margin-top: 20px;
+  padding: 0 4px;
+  font-size: 12px;
+  color: var(--text-muted);
+}
+.legend-item {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+}
+.legend-dot {
+  width: 10px;
+  height: 10px;
+  border-radius: 3px;
+  display: inline-block;
+}
+
+@media (max-width: 860px) {
+  .calendar-wrap { padding: 16px; }
+  .cal-day { min-height: 80px; padding: 6px; }
+  .cal-task { font-size: 10px; padding: 3px 5px; }
+  .calendar-nav h2 { font-size: 16px; min-width: 140px; }
+  .calendar-weekdays > div { font-size: 10px; }
+}
+
+/* ============ ДАШБОРД ============ */
+.dash-wrap {
+  padding: 24px;
+  max-width: 1200px;
+  margin: 0 auto;
+}
+.dash-title {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  margin-bottom: 20px;
+  gap: 16px;
+  flex-wrap: wrap;
+}
+.dash-title h2 {
+  font-size: 20px;
+  font-weight: 600;
+  letter-spacing: -0.02em;
+}
+.dash-sub {
+  font-size: 12px;
+  color: var(--text-muted);
+}
+
+/* Метрики сверху */
+.dash-metrics {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 12px;
+  margin-bottom: 20px;
+}
+.metric {
+  background: var(--bg-elev);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 16px 18px;
+  box-shadow: var(--shadow);
+}
+.metric-label {
+  font-size: 11px;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: .04em;
+  color: var(--text-muted);
+  margin-bottom: 8px;
+}
+.metric-value {
+  font-size: 28px;
+  font-weight: 700;
+  letter-spacing: -0.02em;
+  font-variant-numeric: tabular-nums;
+}
+.metric-value.danger { color: #ff3b30; }
+.metric-value.success { color: #34c759; }
+
+/* Сетка карточек */
+.dash-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 16px;
+}
+.dash-card {
+  background: var(--bg-elev);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 20px;
+  box-shadow: var(--shadow);
+}
+.dash-card-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  font-size: 14px;
+  font-weight: 600;
+  margin-bottom: 14px;
+}
+.dash-count {
+  font-size: 12px;
+  font-weight: 500;
+  color: var(--text-muted);
+  background: var(--bg-col);
+  padding: 3px 10px;
+  border-radius: 8px;
+}
+
+/* Прогресс-бар */
+.dash-progress {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 14px;
+}
+.dash-bar {
+  flex: 1;
+  height: 6px;
+  background: var(--bg-col);
+  border-radius: 3px;
+  overflow: hidden;
+}
+.dash-bar-fill {
+  height: 100%;
+  background: linear-gradient(90deg, var(--accent), var(--accent-2));
+  border-radius: 3px;
+  transition: width .35s ease;
+}
+.dash-pct {
+  font-size: 12px;
+  font-weight: 600;
+  color: var(--text-muted);
+  min-width: 40px;
+  text-align: right;
+  font-variant-numeric: tabular-nums;
+}
+
+/* Разбивка по статусам/колонкам */
+.dash-breakdown {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+.dash-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  font-size: 13px;
+  padding: 6px 0;
+  border-bottom: 1px solid var(--border);
+}
+.dash-row:last-child { border-bottom: none; }
+.dash-row-label {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  color: var(--text);
+}
+.dash-row-label .dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: var(--text-muted);
+  flex-shrink: 0;
+}
+.dash-row-count {
+  font-weight: 600;
+  font-variant-numeric: tabular-nums;
+  color: var(--text-muted);
+}
+.dash-row-count.zero { opacity: .4; }
+
+/* Ближайшие дедлайны */
+.dash-deadlines {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+.deadline-item {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 10px 12px;
+  background: var(--bg-col);
+  border-radius: var(--radius-sm);
+  border-left: 3px solid var(--border);
+  cursor: pointer;
+  transition: transform .12s ease, background .12s ease;
+  font-size: 13px;
+}
+.deadline-item:hover {
+  transform: translateX(2px);
+  background: color-mix(in srgb, var(--accent) 6%, var(--bg-col));
+}
+.deadline-item[data-platform="instagram"] { border-left-color: var(--accent); }
+.deadline-item[data-platform="pinterest"] { border-left-color: var(--accent-2); }
+.deadline-item[data-platform="both"]      { border-left-color: #8a2bbf; }
+.deadline-item.overdue { background: #ff3b3012; }
+.deadline-date {
+  font-size: 11px;
+  font-weight: 600;
+  color: var(--text-muted);
+  min-width: 60px;
+  font-variant-numeric: tabular-nums;
+}
+.deadline-item.overdue .deadline-date { color: #ff3b30; }
+.deadline-title {
+  flex: 1;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.dash-empty {
+  text-align: center;
+  color: var(--text-muted);
+  font-size: 13px;
+  padding: 20px 0;
+}
+
+@media (max-width: 860px) {
+  .dash-wrap { padding: 16px; }
+  .dash-metrics { grid-template-columns: repeat(2, 1fr); }
+  .dash-grid { grid-template-columns: 1fr; }
+  .metric-value { font-size: 22px; }
+}
+
+/* ============ МОБИЛКА ============ */
+@media (max-width: 860px) {
+  header { padding: 12px 16px; gap: 10px; flex-wrap: wrap; }
+  .tabs { order: 3; margin-left: 0; width: 100%; justify-content: center; }
+  .stats { order: 4; width: 100%; justify-content: flex-start; font-size: 12px; margin-left: 0; }
+  .board-wrap, .table-wrap { padding: 16px; }
+  .column { width: 260px; }
+  .logo span:not(.logo-dot) { display: none; }
+}
+</style>
+</head>
+<body>
+
+<header>
+  <div class="logo">
+    <span class="logo-dot"></span>
+    <span>Blogger Planner</span>
+  </div>
+
+  <div class="tabs">
+    <button class="tab" data-view="calendar">📅 Календарь</button>    
+    <button class="tab active" data-view="board">📋 Контент</button>
+    <button class="tab" data-view="collabs">🤝 Сотрудничество</button>
+    <button class="tab" data-view="perfumes">🌸 Ароматы</button>
+    <button class="tab" data-view="dashboard">📊 Дашборд</button>
+  </div>
+
+  <div class="header-actions">
+    <button class="btn-ghost" id="btnTheme" title="Сменить тему">🌙</button>
+    <button class="btn-ghost" id="btnExport" title="Экспорт JSON">⬇️</button>
+    <button class="btn-ghost" id="btnImport" title="Импорт JSON">⬆️</button>
+    <button class="btn-primary" id="btnAdd">+ Задача</button>
+  </div>
+</header>
+
+<!-- ===== ВИД: КАЛЕНДАРЬ ===== -->
+<div class="view" id="view-calendar">
+  <div class="calendar-wrap">
+    <div class="calendar-header">
+      <div class="calendar-nav">
+        <button class="btn-ghost" id="calPrev" title="Предыдущий месяц">←</button>
+        <h2 id="calTitle">Октябрь 2026</h2>
+        <button class="btn-ghost" id="calNext" title="Следующий месяц">→</button>
+      </div>
+      <button class="btn-ghost" id="calToday" style="font-size:13px;">Сегодня</button>
+    </div>
+    <div class="calendar-weekdays">
+      <div>Пн</div><div>Вт</div><div>Ср</div><div>Чт</div>
+      <div>Пт</div><div>Сб</div><div>Вс</div>
+    </div>
+    <div class="calendar-grid" id="calendarGrid"></div>
+    <div class="calendar-legend">
+      <span class="legend-item"><span class="legend-dot" style="background:var(--accent)"></span> Instagram</span>
+      <span class="legend-item"><span class="legend-dot" style="background:var(--accent-2)"></span> Pinterest</span>
+      <span class="legend-item"><span class="legend-dot" style="background:#8a2bbf"></span> Обе платформы</span>
+      <span class="legend-item"><span class="legend-dot" style="background:#ff3b30"></span> Просрочено</span>
+    </div>
+  </div>
+</div>
+
+<!-- ===== ВИД: КОНТЕНТ ===== -->
+<div class="view active" id="view-board">
+  <div class="board-wrap">
+    <div class="board" id="board"></div>
+  </div>
+</div>
+
+<!-- ===== ВИД: СОТРУДНИЧЕСТВО ===== -->
+<div class="view" id="view-collabs">
+  <div class="table-wrap">
+    <div class="table-header">
+      <h2>🤝 Сотрудничество</h2>
+      <span class="counter" id="collabsCounter"></span>
+    </div>
+    <table class="data-table">
+      <thead>
+        <tr>
+          <th class="col-num">№</th>
+          <th>Бренд</th>
+          <th>Ник</th>
+          <th>Статус</th>
+          <th class="col-actions"></th>
+        </tr>
+      </thead>
+      <tbody id="collabsBody"></tbody>
+    </table>
+  </div>
+</div>
+
+<!-- ===== ВИД: АРОМАТЫ ===== -->
+<div class="view" id="view-perfumes">
+  <div class="table-wrap">
+    <div class="table-header">
+      <h2>🌸 Ароматы</h2>
+      <span class="counter" id="perfumesCounter"></span>
+    </div>
+    <table class="data-table">
+      <thead>
+        <tr>
+          <th class="col-num">№</th>
+          <th>Бренд</th>
+          <th>Название</th>
+          <th>Статус</th>
+          <th class="col-actions"></th>
+        </tr>
+      </thead>
+      <tbody id="perfumesBody"></tbody>
+    </table>
+  </div>
+</div>
+
+<!-- ===== ВИД: ДАШБОРД ===== -->
+<div class="view" id="view-dashboard">
+  <div class="dash-wrap">
+    <div class="dash-title">
+      <h2>📊 Дашборд</h2>
+      <span class="dash-sub" id="dashUpdated"></span>
+    </div>
+
+    <!-- Верхние карточки-метрики -->
+    <div class="dash-metrics">
+      <div class="metric">
+        <div class="metric-label">Всего записей</div>
+        <div class="metric-value" id="mTotal">0</div>
+      </div>
+      <div class="metric">
+        <div class="metric-label">В работе</div>
+        <div class="metric-value" id="mActive">0</div>
+      </div>
+      <div class="metric">
+        <div class="metric-label">Просрочено</div>
+        <div class="metric-value danger" id="mOverdue">0</div>
+      </div>
+      <div class="metric">
+        <div class="metric-label">Выложено</div>
+        <div class="metric-value success" id="mPublished">0</div>
+      </div>
+    </div>
+
+    <!-- Сетка разделов -->
+    <div class="dash-grid">
+
+      <!-- Контент -->
+      <div class="dash-card">
+        <div class="dash-card-head">
+          <span>📋 Контент</span>
+          <span class="dash-count" id="dcCards">0</span>
+        </div>
+        <div class="dash-progress">
+          <div class="dash-bar"><div class="dash-bar-fill" id="dbCards" style="width:0%"></div></div>
+          <span class="dash-pct" id="dpCards">0%</span>
+        </div>
+        <div class="dash-breakdown" id="dBreakCards"></div>
+      </div>
+
+      <!-- Сотрудничество -->
+      <div class="dash-card">
+        <div class="dash-card-head">
+          <span>🤝 Сотрудничество</span>
+          <span class="dash-count" id="dcCollabs">0</span>
+        </div>
+        <div class="dash-progress">
+          <div class="dash-bar"><div class="dash-bar-fill" id="dbCollabs" style="width:0%"></div></div>
+          <span class="dash-pct" id="dpCollabs">0%</span>
+        </div>
+        <div class="dash-breakdown" id="dBreakCollabs"></div>
+      </div>
+
+      <!-- Ароматы -->
+      <div class="dash-card">
+        <div class="dash-card-head">
+          <span>🌸 Ароматы</span>
+          <span class="dash-count" id="dcPerfumes">0</span>
+        </div>
+        <div class="dash-progress">
+          <div class="dash-bar"><div class="dash-bar-fill" id="dbPerfumes" style="width:0%"></div></div>
+          <span class="dash-pct" id="dpPerfumes">0%</span>
+        </div>
+        <div class="dash-breakdown" id="dBreakPerfumes"></div>
+      </div>
+
+      <!-- Ближайшие дедлайны -->
+      <div class="dash-card">
+        <div class="dash-card-head">
+          <span>⚠️ Ближайшие дедлайны</span>
+        </div>
+        <div class="dash-deadlines" id="dDeadlines"></div>
+      </div>
+
+    </div>
+  </div>
+</div>
+
+<!-- ===== МОДАЛКА ===== -->
+<div class="modal-backdrop" id="modal">
+  <div class="modal">
+    <h2 id="modalTitle">Новая задача</h2>
+    <input type="hidden" id="cardId">
+
+    <!-- КОНТЕНТ -->
+    <div id="fieldsBoard">
+      <div class="field">
+        <label>Название</label>
+        <input type="text" id="fTitle" placeholder="Например: Reels про утренние ритуалы" autocomplete="off">
+      </div>
+      <div class="field-row">
+        <div class="field">
+          <label>Платформа</label>
+          <select id="fPlatform">
+            <option value="instagram">Instagram</option>
+            <option value="pinterest">Pinterest</option>
+            <option value="both">Обе</option>
+          </select>
+        </div>
+        <div class="field">
+          <label>Приоритет</label>
+          <select id="fPriority">
+            <option value="low">Низкий</option>
+            <option value="med">Средний</option>
+            <option value="high">Высокий</option>
+          </select>
+        </div>
+      </div>
+      <div class="field-row">
+        <div class="field">
+          <label>Дедлайн</label>
+          <input type="date" id="fDate">
+        </div>
+        <div class="field">
+          <label>Колонка</label>
+          <select id="fColumn"></select>
+        </div>
+      </div>
+      <div class="field">
+        <label>Заметки</label>
+        <textarea id="fNotes" placeholder="Идея, хэштеги, ссылки, референсы..."></textarea>
+      </div>
+    </div>
+
+    <!-- СОТРУДНИЧЕСТВО -->
+    <div id="fieldsCollab" style="display:none;">
+      <div class="field">
+        <label>Бренд</label>
+        <input type="text" id="cBrand" placeholder="Например: Dior" autocomplete="off">
+      </div>
+      <div class="field">
+        <label>Ник (аккаунт бренда)</label>
+        <input type="text" id="cNick" placeholder="@dior" autocomplete="off">
+      </div>
+      <div class="field">
+        <label>Статус</label>
+        <select id="cStatus"></select>
+      </div>
+    </div>
+
+    <!-- АРОМАТЫ -->
+    <div id="fieldsPerfume" style="display:none;">
+      <div class="field">
+        <label>Бренд</label>
+        <input type="text" id="pBrand" placeholder="Например: Chanel" autocomplete="off">
+      </div>
+      <div class="field">
+        <label>Название</label>
+        <input type="text" id="pName" placeholder="Например: Bleu de Chanel" autocomplete="off">
+      </div>
+      <div class="field">
+        <label>Статус</label>
+        <select id="pStatus"></select>
+      </div>
+    </div>
+
+    <div class="modal-actions">
+      <button class="btn-ghost" id="btnCancel" style="padding:9px 16px;">Отмена</button>
+      <button class="btn-primary" id="btnSave">Сохранить</button>
+    </div>
+  </div>
+</div>
+
+<input type="file" id="fileInput" accept=".json" style="display:none">
+
+<script>
+/* ============================================================
+   КОНФИГ
+============================================================ */
+const COLUMNS = [
+  { id: 'ideas',     title: '💡 Идеи' },
+  { id: 'script',    title: '✍️ Сценарий' },
+  { id: 'shoot',     title: '📸 Съёмка / Дизайн' },
+  { id: 'edit',      title: '🎬 Монтаж' },
+  { id: 'ready',     title: '✅ Готово' },
+  { id: 'published', title: '🚀 Опубликовано' },
+];
+
+const PLATFORM_LABELS = {
+  instagram: 'Instagram',
+  pinterest: 'Pinterest',
+  both:      'Instagram + Pinterest',
+};
+
+const PRIORITY_LABELS = { low: 'Низкий', med: 'Средний', high: 'Высокий' };
+
+const COLLAB_STATUSES = [
+  { id: 'write',     label: 'Написать' },
+  { id: 'written',   label: 'Написано' },
+  { id: 'waiting',   label: 'Жду товар' },
+  { id: 'received',  label: 'Товар получен' },
+  { id: 'shooting',  label: 'Снимаю обзор' },
+  { id: 'editing',   label: 'Монтаж' },
+  { id: 'published', label: 'Выложено' },
+];
+
+const PERFUME_STATUSES = [
+  { id: 'in-stock',     label: 'В наличии' },
+  { id: 'out-of-stock', label: 'Нет в наличии' },
+  { id: 'need-shoot',   label: 'Надо снять' },
+  { id: 'shot',         label: 'Снято' },
+];
+
+const STORAGE_KEY = 'blogger-planner-v1';
+
+/* ============================================================
+   СОСТОЯНИЕ
+============================================================ */
+let state = {
+  cards: [], collabs: [], perfumes: [],
+  theme: 'light',
+};
+
+let currentView = 'board';
+let modalContext = 'board';
+
+// Состояние календаря
+const today = new Date();
+let calYear = today.getFullYear();
+let calMonth = today.getMonth(); // 0-11
+
+/* ============================================================
+   УТИЛИТЫ
+============================================================ */
+const $ = (s) => document.querySelector(s);
+const $$ = (s) => document.querySelectorAll(s);
+
+function uid() {
+  return Date.now().toString(36) + Math.random().toString(36).slice(2, 7);
+}
+
+function todayISO() {
+  const d = new Date();
+  d.setHours(0, 0, 0, 0);
+  return d.toISOString().slice(0, 10);
+}
+
+function formatDate(iso) {
+  if (!iso) return '';
+  const [y, m, d] = iso.split('-');
+  const months = ['янв','фев','мар','апр','мая','июн','июл','авг','сен','окт','ноя','дек'];
+  return `${parseInt(d)} ${months[parseInt(m) - 1]}`;
+}
+
+function dateStatus(iso) {
+  if (!iso) return '';
+  const today = todayISO();
+  if (iso < today) return 'overdue';
+  if (iso === today) return 'today';
+  return '';
+}
+
+function escapeHtml(str) {
+  const div = document.createElement('div');
+  div.textContent = str ?? '';
+  return div.innerHTML;
+}
+
+/* ============================================================
+   ПЕРСИСТЕНТНОСТЬ
+============================================================ */
+function save() {
+  try {
+    localStorage.setItem(STORAGE_KEY, JSON.stringify(state));
+    // если дашборд открыт — обновим его
+    if (typeof currentView !== 'undefined' && currentView === 'dashboard') {
+      renderDashboard();
+    }
+  } catch (e) { console.warn('Save error:', e); }
+}
+function load() {
+  try {
+    const raw = localStorage.getItem(STORAGE_KEY);
+    if (!raw) return;
+    const data = JSON.parse(raw);
+    if (Array.isArray(data.cards))    state.cards = data.cards;
+    if (Array.isArray(data.collabs))  state.collabs = data.collabs;
+    if (Array.isArray(data.perfumes)) state.perfumes = data.perfumes;
+    if (data.theme) state.theme = data.theme;
+  } catch (e) { console.warn('Load error:', e); }
+}
+
+/* ============================================================
+   ПЕРЕКЛЮЧЕНИЕ ВИДОВ
+============================================================ */
+function switchView(view) {
+  currentView = view;
+
+  $$('.tab').forEach(t => t.classList.toggle('active', t.dataset.view === view));
+  $$('.view').forEach(v => v.classList.remove('active'));
+  $('#view-' + view).classList.add('active');
+
+  const btn = $('#btnAdd');
+
+  // Скрываем кнопку на Календаре и Дашборде
+  if (view === 'calendar' || view === 'dashboard') {
+    btn.style.display = 'none';
+  } else {
+    btn.style.display = '';
+  }
+
+  if (view === 'board')    btn.textContent = '+ Задача';
+  if (view === 'collabs')  btn.textContent = '+ Сотрудничество';
+  if (view === 'perfumes') btn.textContent = '+ Аромат';
+
+  if (view === 'calendar')  renderCalendar();
+  if (view === 'dashboard') renderDashboard();
+
+  renderStats();
+}
+
+/* ============================================================
+   РЕНДЕР: ДОСКА
+============================================================ */
+function render() {
+  const board = $('#board');
+  board.innerHTML = '';
+
+  COLUMNS.forEach(col => {
+    const colCards = state.cards.filter(c => c.column === col.id);
+
+    const colEl = document.createElement('div');
+    colEl.className = 'column';
+    colEl.dataset.column = col.id;
+    colEl.innerHTML = `
+      <div class="column-header">
+        <span>${col.title}</span>
+        <span class="column-count">${colCards.length}</span>
+      </div>
+      <div class="column-body" data-column="${col.id}"></div>
+    `;
+
+    const body = colEl.querySelector('.column-body');
+
+    if (colCards.length === 0) {
+      body.innerHTML = `<div class="empty-hint">Перетащи сюда карточку</div>`;
+    } else {
+      colCards
+        .sort((a, b) => {
+          if (a.date && b.date) return a.date.localeCompare(b.date);
+          if (a.date) return -1;
+          if (b.date) return 1;
+          return 0;
+        })
+        .forEach(card => body.appendChild(renderCard(card)));
+    }
+
+    colEl.addEventListener('dragover', (e) => { e.preventDefault(); colEl.classList.add('drag-over'); });
+    colEl.addEventListener('dragleave', (e) => {
+      if (!colEl.contains(e.relatedTarget)) colEl.classList.remove('drag-over');
+    });
+    colEl.addEventListener('drop', (e) => {
+      e.preventDefault();
+      colEl.classList.remove('drag-over');
+      const cardId = e.dataTransfer.getData('text/plain');
+      moveCard(cardId, col.id);
+    });
+
+    board.appendChild(colEl);
+  });
+
+  renderStats();
+}
+
+function renderCard(card) {
+  const el = document.createElement('div');
+  el.className = 'card';
+  el.draggable = true;
+  el.dataset.id = card.id;
+  el.dataset.platform = card.platform;
+
+  const dStatus = dateStatus(card.date);
+  const dateBadge = card.date ? `<span class="badge badge-date ${dStatus}">📅 ${formatDate(card.date)}</span>` : '';
+  const priorityBadge = card.priority && card.priority !== 'low'
+    ? `<span class="badge badge-priority-${card.priority}">${PRIORITY_LABELS[card.priority]}</span>` : '';
+  const platformBadge = `<span class="badge badge-plat">${PLATFORM_LABELS[card.platform]}</span>`;
+
+  el.innerHTML = `
+    <div class="card-actions">
+      <button data-action="edit" title="Редактировать">✏️</button>
+      <button data-action="duplicate" title="Дублировать">📋</button>
+      <button data-action="delete" title="Удалить">🗑️</button>
+    </div>
+    <div class="card-title">${escapeHtml(card.title)}</div>
+    <div class="card-meta">${platformBadge}${dateBadge}${priorityBadge}</div>
+  `;
+
+  el.addEventListener('dragstart', (e) => {
+    e.dataTransfer.setData('text/plain', card.id);
+    e.dataTransfer.effectAllowed = 'move';
+    requestAnimationFrame(() => el.classList.add('dragging'));
+  });
+  el.addEventListener('dragend', () => el.classList.remove('dragging'));
+  el.addEventListener('click', (e) => {
+    if (e.target.closest('[data-action]')) return;
+    openBoardModal(card.id);
+  });
+  el.querySelectorAll('[data-action]').forEach(btn => {
+    btn.addEventListener('click', (e) => {
+      e.stopPropagation();
+      const a = btn.dataset.action;
+      if (a === 'edit')      openBoardModal(card.id);
+      if (a === 'duplicate') duplicateCard(card.id);
+      if (a === 'delete')    deleteCard(card.id);
+    });
+  });
+
+  return el;
+}
+
+/* ============================================================
+   РЕНДЕР: СОТРУДНИЧЕСТВО
+============================================================ */
+function renderCollabs() {
+  const tbody = $('#collabsBody');
+  tbody.innerHTML = '';
+
+  if (state.collabs.length === 0) {
+    tbody.innerHTML = `<tr><td colspan="5" class="cell-empty">Пока пусто. Нажми «+ Сотрудничество» в шапке.</td></tr>`;
+    $('#collabsCounter').textContent = '';
+    return;
+  }
+
+  state.collabs.forEach((item, idx) => {
+    const tr = document.createElement('tr');
+    const statusOptions = COLLAB_STATUSES
+      .map(s => `<option value="${s.id}" ${s.id === item.status ? 'selected' : ''}>${s.label}</option>`)
+      .join('');
+
+    tr.innerHTML = `
+      <td class="col-num">${idx + 1}</td>
+      <td><b>${escapeHtml(item.brand)}</b></td>
+      <td class="cell-nick">${escapeHtml(item.nick)}</td>
+      <td>
+        <select class="status-select status" data-status="${item.status}" data-id="${item.id}">
+          ${statusOptions}
+        </select>
+      </td>
+      <td class="col-actions">
+        <button class="btn-icon" data-action="edit" title="Редактировать">✏️</button>
+        <button class="btn-icon" data-action="delete" title="Удалить">🗑️</button>
+      </td>
+    `;
+
+    const sel = tr.querySelector('.status-select');
+    sel.addEventListener('change', (e) => {
+      const it = state.collabs.find(c => c.id === e.target.dataset.id);
+      if (!it) return;
+      it.status = e.target.value;
+      it.updatedAt = Date.now();
+      save();
+      renderCollabs();
+      renderStats();
+    });
+
+    tr.querySelector('[data-action="edit"]').addEventListener('click', () => openCollabModal(item.id));
+    tr.querySelector('[data-action="delete"]').addEventListener('click', () => deleteCollab(item.id));
+
+    tbody.appendChild(tr);
+  });
+
+  const published = state.collabs.filter(c => c.status === 'published').length;
+  $('#collabsCounter').textContent = `${state.collabs.length} всего · ${published} выложено`;
+}
+
+/* ============================================================
+   РЕНДЕР: АРОМАТЫ
+============================================================ */
+function renderPerfumes() {
+  const tbody = $('#perfumesBody');
+  tbody.innerHTML = '';
+
+  if (state.perfumes.length === 0) {
+    tbody.innerHTML = `<tr><td colspan="5" class="cell-empty">Пока пусто. Нажми «+ Аромат» в шапке.</td></tr>`;
+    $('#perfumesCounter').textContent = '';
+    return;
+  }
+
+  state.perfumes.forEach((item, idx) => {
+    const tr = document.createElement('tr');
+    const statusOptions = PERFUME_STATUSES
+      .map(s => `<option value="${s.id}" ${s.id === item.status ? 'selected' : ''}>${s.label}</option>`)
+      .join('');
+
+    tr.innerHTML = `
+      <td class="col-num">${idx + 1}</td>
+      <td><b>${escapeHtml(item.brand)}</b></td>
+      <td>${escapeHtml(item.name)}</td>
+      <td>
+        <select class="status-select status" data-status="${item.status}" data-id="${item.id}">
+          ${statusOptions}
+        </select>
+      </td>
+      <td class="col-actions">
+        <button class="btn-icon" data-action="edit" title="Редактировать">✏️</button>
+        <button class="btn-icon" data-action="delete" title="Удалить">🗑️</button>
+      </td>
+    `;
+
+    const sel = tr.querySelector('.status-select');
+    sel.addEventListener('change', (e) => {
+      const it = state.perfumes.find(p => p.id === e.target.dataset.id);
+      if (!it) return;
+      it.status = e.target.value;
+      it.updatedAt = Date.now();
+      save();
+      renderPerfumes();
+      renderStats();
+    });
+
+    tr.querySelector('[data-action="edit"]').addEventListener('click', () => openPerfumeModal(item.id));
+    tr.querySelector('[data-action="delete"]').addEventListener('click', () => deletePerfume(item.id));
+
+    tbody.appendChild(tr);
+  });
+
+  const published = state.perfumes.filter(p => p.status === 'published').length;
+  $('#perfumesCounter').textContent = `${state.perfumes.length} всего · ${published} выложено`;
+}
+
+/* ============================================================
+   КАЛЕНДАРЬ
+============================================================ */
+const MONTH_NAMES = [
+  'Январь','Февраль','Март','Апрель','Май','Июнь',
+  'Июль','Август','Сентябрь','Октябрь','Ноябрь','Декабрь'
+];
+
+function renderCalendar() {
+  const grid = $('#calendarGrid');
+  const title = $('#calTitle');
+  if (!grid) return;
+
+  title.textContent = `${MONTH_NAMES[calMonth]} ${calYear}`;
+  grid.innerHTML = '';
+
+  // Первый день месяца (0 = воскресенье, но нам нужен понедельник как первый)
+  const firstDay = new Date(calYear, calMonth, 1);
+  let startWeekday = firstDay.getDay(); // 0 = вс
+  startWeekday = startWeekday === 0 ? 6 : startWeekday - 1; // приводим к 0=пн
+
+  const daysInMonth = new Date(calYear, calMonth + 1, 0).getDate();
+
+  const todayStr = todayISO();
+
+  // Пустые ячейки до первого дня
+  for (let i = 0; i < startWeekday; i++) {
+    const empty = document.createElement('div');
+    empty.className = 'cal-day empty';
+    grid.appendChild(empty);
+  }
+
+  // Ячейки дней
+  for (let day = 1; day <= daysInMonth; day++) {
+    const dateStr = `${calYear}-${String(calMonth + 1).padStart(2, '0')}-${String(day).padStart(2, '0')}`;
+
+    const cell = document.createElement('div');
+    cell.className = 'cal-day';
+    if (dateStr === todayStr) cell.classList.add('today');
+
+    // выходной?
+    const wd = new Date(calYear, calMonth, day).getDay();
+    if (wd === 0 || wd === 6) cell.classList.add('weekend');
+
+    // номер дня
+    const num = document.createElement('div');
+    num.className = 'cal-day-num';
+    num.textContent = day;
+    cell.appendChild(num);
+
+    // задачи с этой датой
+    const tasks = state.cards.filter(c => c.date === dateStr);
+    tasks.forEach(task => {
+      const el = document.createElement('div');
+      el.className = 'cal-task';
+      el.dataset.platform = task.platform;
+      el.textContent = task.title;
+      el.title = task.title;
+
+      if (task.column === 'published') el.classList.add('published');
+      else if (dateStr < todayStr) el.classList.add('overdue');
+
+      el.addEventListener('click', (e) => {
+        e.stopPropagation();
+        openBoardModal(task.id);
+      });
+
+      cell.appendChild(el);
+    });
+
+    // Клик по пустой ячейке → новая задача с этой датой
+    cell.addEventListener('click', () => {
+      openBoardModal();
+      // подставляем дату
+      setTimeout(() => {
+        $('#fDate').value = dateStr;
+        $('#fTitle').focus();
+      }, 60);
+    });
+
+    grid.appendChild(cell);
+  }
+}
+
+function calPrevMonth() {
+  calMonth--;
+  if (calMonth < 0) { calMonth = 11; calYear--; }
+  renderCalendar();
+}
+
+function calNextMonth() {
+  calMonth++;
+  if (calMonth > 11) { calMonth = 0; calYear++; }
+  renderCalendar();
+}
+
+function calGoToday() {
+  const now = new Date();
+  calYear = now.getFullYear();
+  calMonth = now.getMonth();
+  renderCalendar();
+}
+
+/* ============================================================
+   СТАТИСТИКА (для дашборда)
+============================================================ */
+function computeStats() {
+  const todayStr = todayISO();
+
+  const total = state.cards.length + state.collabs.length + state.perfumes.length;
+
+  const publishedCards    = state.cards.filter(c => c.column === 'published').length;
+  const publishedCollabs  = state.collabs.filter(c => c.status === 'published').length;
+  const publishedPerfumes = state.perfumes.filter(p => p.status === 'published').length;
+  const published = publishedCards + publishedCollabs + publishedPerfumes;
+
+  const active = total - published;
+
+  const overdue = state.cards.filter(c => {
+    if (!c.date || c.column === 'published') return false;
+    return c.date < todayStr;
+  }).length;
+
+  return { total, active, overdue, published };
+}
+
+/* ============================================================
+   ДАШБОРД
+============================================================ */
+function renderDashboard() {
+  const s = computeStats();
+
+  // Верхние метрики
+  $('#mTotal').textContent     = s.total;
+  $('#mActive').textContent    = s.active;
+  $('#mOverdue').textContent   = s.overdue;
+  $('#mPublished').textContent = s.published;
+
+  // Время обновления
+  const now = new Date();
+  const timeStr = now.toLocaleTimeString('ru-RU', { hour: '2-digit', minute: '2-digit' });
+  $('#dashUpdated').textContent = `Обновлено в ${timeStr}`;
+
+  // ==== КОНТЕНТ ====
+  const totalCards = state.cards.length;
+  const doneCards = state.cards.filter(c => c.column === 'published').length;
+  const pctCards = totalCards ? Math.round((doneCards / totalCards) * 100) : 0;
+  $('#dcCards').textContent = `${totalCards} шт.`;
+  $('#dbCards').style.width = pctCards + '%';
+  $('#dpCards').textContent = pctCards + '%';
+
+  const cardsBreak = $('#dBreakCards');
+  cardsBreak.innerHTML = '';
+  if (totalCards === 0) {
+    cardsBreak.innerHTML = '<div class="dash-empty">Нет задач</div>';
+  } else {
+    COLUMNS.forEach(col => {
+      const count = state.cards.filter(c => c.column === col.id).length;
+      const row = document.createElement('div');
+      row.className = 'dash-row';
+      row.innerHTML = `
+        <span class="dash-row-label"><span class="dot"></span>${col.title}</span>
+        <span class="dash-row-count ${count === 0 ? 'zero' : ''}">${count}</span>
+      `;
+      cardsBreak.appendChild(row);
+    });
+  }
+
+  // ==== СОТРУДНИЧЕСТВО ====
+  const totalCollabs = state.collabs.length;
+  const doneCollabs = state.collabs.filter(c => c.status === 'published').length;
+  const pctCollabs = totalCollabs ? Math.round((doneCollabs / totalCollabs) * 100) : 0;
+  $('#dcCollabs').textContent = `${totalCollabs} шт.`;
+  $('#dbCollabs').style.width = pctCollabs + '%';
+  $('#dpCollabs').textContent = pctCollabs + '%';
+
+  const collabsBreak = $('#dBreakCollabs');
+  collabsBreak.innerHTML = '';
+  if (totalCollabs === 0) {
+    collabsBreak.innerHTML = '<div class="dash-empty">Нет сотрудничеств</div>';
+  } else {
+    COLLAB_STATUSES.forEach(st => {
+      const count = state.collabs.filter(c => c.status === st.id).length;
+      const row = document.createElement('div');
+      row.className = 'dash-row';
+      row.innerHTML = `
+        <span class="dash-row-label"><span class="dot"></span>${st.label}</span>
+        <span class="dash-row-count ${count === 0 ? 'zero' : ''}">${count}</span>
+      `;
+      collabsBreak.appendChild(row);
+    });
+  }
+
+  // ==== АРОМАТЫ ====
+  const totalPerfumes = state.perfumes.length;
+  const donePerfumes = state.perfumes.filter(p => p.status === 'shot').length;
+  const pctPerfumes = totalPerfumes ? Math.round((donePerfumes / totalPerfumes) * 100) : 0;
+  $('#dcPerfumes').textContent = `${totalPerfumes} шт.`;
+  $('#dbPerfumes').style.width = pctPerfumes + '%';
+  $('#dpPerfumes').textContent = pctPerfumes + '%';
+
+  const perfumesBreak = $('#dBreakPerfumes');
+  perfumesBreak.innerHTML = '';
+  if (totalPerfumes === 0) {
+    perfumesBreak.innerHTML = '<div class="dash-empty">Нет ароматов</div>';
+  } else {
+    PERFUME_STATUSES.forEach(st => {
+      const count = state.perfumes.filter(p => p.status === st.id).length;
+      const row = document.createElement('div');
+      row.className = 'dash-row';
+      row.innerHTML = `
+        <span class="dash-row-label"><span class="dot"></span>${st.label}</span>
+        <span class="dash-row-count ${count === 0 ? 'zero' : ''}">${count}</span>
+      `;
+      perfumesBreak.appendChild(row);
+    });
+  }
+
+  // ==== БЛИЖАЙШИЕ ДЕДЛАЙНЫ ====
+  const todayStr = todayISO();
+  const upcoming = state.cards
+    .filter(c => c.date && c.column !== 'published')
+    .sort((a, b) => a.date.localeCompare(b.date))
+    .slice(0, 8);
+
+  const dl = $('#dDeadlines');
+  dl.innerHTML = '';
+  if (upcoming.length === 0) {
+    dl.innerHTML = '<div class="dash-empty">Нет активных дедлайнов 🎉</div>';
+  } else {
+    upcoming.forEach(card => {
+      const el = document.createElement('div');
+      el.className = 'deadline-item';
+      el.dataset.platform = card.platform;
+      if (card.date < todayStr) el.classList.add('overdue');
+
+      el.innerHTML = `
+        <span class="deadline-date">${formatDate(card.date)}</span>
+        <span class="deadline-title">${escapeHtml(card.title)}</span>
+      `;
+      el.addEventListener('click', () => openBoardModal(card.id));
+      dl.appendChild(el);
+    });
+  }
+}
+
+// Оставляем заглушку для обратной совместимости (в шапке больше нет счётчиков)
+function renderStats() {
+  // ничего не делает, оставлено чтобы не переписывать вызовы
+}
+
+/* ============================================================
+   ОПЕРАЦИИ: КОНТЕНТ
+============================================================ */
+function moveCard(cardId, newColumn) {
+  const card = state.cards.find(c => c.id === cardId);
+  if (!card || card.column === newColumn) return;
+  card.column = newColumn;
+  card.updatedAt = Date.now();
+  save();
+  render();
+  if (currentView === 'calendar') renderCalendar();
+}
+
+function deleteCard(cardId) {
+  const card = state.cards.find(c => c.id === cardId);
+  if (!card) return;
+  if (!confirm(`Удалить «${card.title}»?`)) return;
+  state.cards = state.cards.filter(c => c.id !== cardId);
+  save();
+  render();
+  if (currentView === 'calendar') renderCalendar();
+}
+
+function duplicateCard(cardId) {
+  const card = state.cards.find(c => c.id === cardId);
+  if (!card) return;
+  state.cards.push({
+    ...card,
+    id: uid(),
+    title: card.title + ' (копия)',
+    createdAt: Date.now(),
+    updatedAt: Date.now(),
+  });
+  save();
+  render();
+}
+
+/* ============================================================
+   ОПЕРАЦИИ: СОТРУДНИЧЕСТВО
+============================================================ */
+function deleteCollab(id) {
+  const item = state.collabs.find(c => c.id === id);
+  if (!item) return;
+  if (!confirm(`Удалить сотрудничество с «${item.brand}»?`)) return;
+  state.collabs = state.collabs.filter(c => c.id !== id);
+  save();
+  renderCollabs();
+  renderStats();
+}
+
+/* ============================================================
+   ОПЕРАЦИИ: АРОМАТЫ
+============================================================ */
+function deletePerfume(id) {
+  const item = state.perfumes.find(p => p.id === id);
+  if (!item) return;
+  if (!confirm(`Удалить «${item.brand} — ${item.name}»?`)) return;
+  state.perfumes = state.perfumes.filter(p => p.id !== id);
+  save();
+  renderPerfumes();
+  renderStats();
+}
+
+/* ============================================================
+   МОДАЛКА
+============================================================ */
+const modal = $('#modal');
+
+function fillColumnSelect() {
+  const sel = $('#fColumn');
+  sel.innerHTML = COLUMNS.map(c => `<option value="${c.id}">${c.title}</option>`).join('');
+}
+
+function fillStatusSelect(selectEl, statuses, currentId) {
+  selectEl.innerHTML = statuses
+    .map(s => `<option value="${s.id}" ${s.id === currentId ? 'selected' : ''}>${s.label}</option>`)
+    .join('');
+}
+
+function showModalFields(context) {
+  $('#fieldsBoard').style.display   = context === 'board'    ? 'block' : 'none';
+  $('#fieldsCollab').style.display  = context === 'collabs'  ? 'block' : 'none';
+  $('#fieldsPerfume').style.display = context === 'perfumes' ? 'block' : 'none';
+}
+
+/* ---- Контент ---- */
+function openBoardModal(cardId = null) {
+  modalContext = 'board';
+  fillColumnSelect();
+
+  if (cardId) {
+    const card = state.cards.find(c => c.id === cardId);
+    if (!card) return;
+    $('#modalTitle').textContent = 'Редактировать задачу';
+    $('#cardId').value       = card.id;
+    $('#fTitle').value       = card.title;
+    $('#fPlatform').value    = card.platform;
+    $('#fPriority').value    = card.priority || 'med';
+    $('#fDate').value        = card.date || '';
+    $('#fColumn').value      = card.column;
+    $('#fNotes').value       = card.notes || '';
+  } else {
+    $('#modalTitle').textContent = 'Новая задача';
+    $('#cardId').value       = '';
+    $('#fTitle').value       = '';
+    $('#fPlatform').value    = 'instagram';
+    $('#fPriority').value    = 'med';
+    $('#fDate').value        = '';
+    $('#fColumn').value      = 'ideas';
+    $('#fNotes').value       = '';
+  }
+
+  showModalFields('board');
+  modal.classList.add('open');
+  setTimeout(() => $('#fTitle').focus(), 50);
+}
+
+/* ---- Сотрудничество ---- */
+function openCollabModal(id = null) {
+  modalContext = 'collabs';
+  const item = id ? state.collabs.find(c => c.id === id) : null;
+
+  $('#modalTitle').textContent = item ? 'Редактировать сотрудничество' : 'Новое сотрудничество';
+  $('#cardId').value = item ? item.id : '';
+  $('#cBrand').value = item ? item.brand : '';
+  $('#cNick').value  = item ? item.nick  : '';
+  fillStatusSelect($('#cStatus'), COLLAB_STATUSES, item ? item.status : 'write');
+
+  showModalFields('collabs');
+  modal.classList.add('open');
+  setTimeout(() => $('#cBrand').focus(), 50);
+}
+
+/* ---- Ароматы ---- */
+function openPerfumeModal(id = null) {
+  modalContext = 'perfumes';
+  const item = id ? state.perfumes.find(p => p.id === id) : null;
+
+  $('#modalTitle').textContent = item ? 'Редактировать аромат' : 'Новый аромат';
+  $('#cardId').value = item ? item.id : '';
+  $('#pBrand').value = item ? item.brand : '';
+  $('#pName').value  = item ? item.name  : '';
+  fillStatusSelect($('#pStatus'), PERFUME_STATUSES, item ? item.status : 'in-stock');
+
+  showModalFields('perfumes');
+  modal.classList.add('open');
+  setTimeout(() => $('#pBrand').focus(), 50);
+}
+
+/* ---- Общее ---- */
+function closeModal() { modal.classList.remove('open'); }
+
+function flashInvalid(input) {
+  input.focus();
+  input.style.borderColor = '#ff3b30';
+  setTimeout(() => input.style.borderColor = '', 1200);
+}
+
+function saveFromModal() {
+  if (modalContext === 'board')    return saveBoardFromModal();
+  if (modalContext === 'collabs')  return saveCollabFromModal();
+  if (modalContext === 'perfumes') return savePerfumeFromModal();
+}
+
+function saveBoardFromModal() {
+  const fTitle = $('#fTitle');
+  const title = fTitle.value.trim();
+  if (!title) return flashInvalid(fTitle);
+
+  const id = $('#cardId').value;
+  const payload = {
+    title,
+    platform: $('#fPlatform').value,
+    priority: $('#fPriority').value,
+    date:     $('#fDate').value || '',
+    column:   $('#fColumn').value,
+    notes:    $('#fNotes').value.trim(),
+  };
+
+  if (id) {
+    const card = state.cards.find(c => c.id === id);
+    if (card) Object.assign(card, payload, { updatedAt: Date.now() });
+  } else {
+    state.cards.push({ id: uid(), ...payload, createdAt: Date.now(), updatedAt: Date.now() });
+  }
+
+  save();
+  render();
+  if (currentView === 'calendar') renderCalendar();
+  closeModal();
+}
+
+function saveCollabFromModal() {
+  const brandEl = $('#cBrand');
+  const brand = brandEl.value.trim();
+  if (!brand) return flashInvalid(brandEl);
+
+  const id = $('#cardId').value;
+  const payload = {
+    brand,
+    nick:   $('#cNick').value.trim(),
+    status: $('#cStatus').value,
+  };
+
+  if (id) {
+    const it = state.collabs.find(c => c.id === id);
+    if (it) Object.assign(it, payload, { updatedAt: Date.now() });
+  } else {
+    state.collabs.push({ id: uid(), ...payload, createdAt: Date.now(), updatedAt: Date.now() });
+  }
+
+  save();
+  renderCollabs();
+  renderStats();
+  closeModal();
+}
+
+function savePerfumeFromModal() {
+  const brandEl = $('#pBrand');
+  const brand = brandEl.value.trim();
+  if (!brand) return flashInvalid(brandEl);
+
+  const nameEl = $('#pName');
+  const name = nameEl.value.trim();
+  if (!name) return flashInvalid(nameEl);
+
+  const id = $('#cardId').value;
+  const payload = {
+    brand,
+    name,
+    status: $('#pStatus').value,
+  };
+
+  if (id) {
+    const it = state.perfumes.find(p => p.id === id);
+    if (it) Object.assign(it, payload, { updatedAt: Date.now() });
+  } else {
+    state.perfumes.push({ id: uid(), ...payload, createdAt: Date.now(), updatedAt: Date.now() });
+  }
+
+  save();
+  renderPerfumes();
+  renderStats();
+  closeModal();
+}
+
+/* ============================================================
+   ТЕМА
+============================================================ */
+function applyTheme() {
+  document.documentElement.setAttribute('data-theme', state.theme);
+  $('#btnTheme').textContent = state.theme === 'dark' ? '☀️' : '🌙';
+}
+
+function toggleTheme() {
+  state.theme = state.theme === 'dark' ? 'light' : 'dark';
+  applyTheme();
+  save();
+}
+
+/* ============================================================
+   ЭКСПОРТ / ИМПОРТ
+============================================================ */
+function exportJSON() {
+  const dataStr = JSON.stringify(state, null, 2);
+  const blob = new Blob([dataStr], { type: 'application/json' });
+  const url = URL.createObjectURL(blob);
+  const a = document.createElement('a');
+  const date = new Date().toISOString().slice(0, 10);
+  a.href = url;
+  a.download = `blogger-planner-${date}.json`;
+  a.click();
+  URL.revokeObjectURL(url);
+}
+
+function importJSON(file) {
+  const reader = new FileReader();
+  reader.onload = (e) => {
+    try {
+      const data = JSON.parse(e.target.result);
+      if (!data.cards && !data.collabs && !data.perfumes) throw new Error('Пустой или неверный файл');
+
+      const counts = [
+        (data.cards?.length || 0) + ' задач',
+        (data.collabs?.length || 0) + ' сотрудничеств',
+        (data.perfumes?.length || 0) + ' ароматов',
+      ].join(', ');
+
+      if (!confirm(`Импортировать (${counts})? Текущие данные будут заменены.`)) return;
+
+      state.cards    = Array.isArray(data.cards)    ? data.cards    : [];
+      state.collabs  = Array.isArray(data.collabs)  ? data.collabs  : [];
+      state.perfumes = Array.isArray(data.perfumes) ? data.perfumes : [];
+      if (data.theme) state.theme = data.theme;
+
+      save();
+      applyTheme();
+      render();
+      renderCollabs();
+      renderPerfumes();
+      renderStats();
+      alert('Импорт завершён ✅');
+    } catch (err) {
+      alert('Ошибка импорта: ' + err.message);
+    }
+  };
+  reader.readAsText(file);
+}
+
+/* ============================================================
+   СОБЫТИЯ
+============================================================ */
+$$('.tab').forEach(tab => {
+  tab.addEventListener('click', () => switchView(tab.dataset.view));
+});
+
+$('#btnAdd').addEventListener('click', () => {
+  if (currentView === 'board')    openBoardModal();
+  if (currentView === 'collabs')  openCollabModal();
+  if (currentView === 'perfumes') openPerfumeModal();
+});
+
+$('#btnTheme').addEventListener('click', toggleTheme);
+$('#btnExport').addEventListener('click', exportJSON);
+$('#btnImport').addEventListener('click', () => $('#fileInput').click());
+$('#btnSave').addEventListener('click', saveFromModal);
+$('#btnCancel').addEventListener('click', closeModal);
+
+$('#fileInput').addEventListener('change', (e) => {
+  const file = e.target.files[0];
+  if (file) importJSON(file);
+  e.target.value = '';
+});
+
+modal.addEventListener('click', (e) => {
+  if (e.target === modal) closeModal();
+});
+
+document.addEventListener('keydown', (e) => {
+  if (e.key === 'Escape' && modal.classList.contains('open')) closeModal();
+  if (e.key === 'Enter' && (e.metaKey || e.ctrlKey) && modal.classList.contains('open')) {
+    e.preventDefault();
+    saveFromModal();
+  }
+  if (e.key.toLowerCase() === 'n' && !modal.classList.contains('open')) {
+    const tag = document.activeElement.tagName;
+    if (tag !== 'INPUT' && tag !== 'TEXTAREA' && tag !== 'SELECT') {
+      e.preventDefault();
+      $('#btnAdd').click();
+    }
+  }
+});
+
+// Календарь
+$('#calPrev').addEventListener('click', calPrevMonth);
+$('#calNext').addEventListener('click', calNextMonth);
+$('#calToday').addEventListener('click', calGoToday);
+
+/* ============================================================
+   ИНИЦИАЛИЗАЦИЯ
+============================================================ */
+function init() {
+  load();
+  applyTheme();
+
+  // Демо-данные при пустой базе
+  if (state.cards.length === 0 && state.collabs.length === 0 && state.perfumes.length === 0) {
+    const t = todayISO();
+
+    state.cards = [
+      {
+        id: uid(), title: 'Reels: 3 утренние привычки',
+        platform: 'instagram', priority: 'high', date: t,
+        column: 'ideas', notes: 'Хук: "Ты делаешь это неправильно..."',
+        createdAt: Date.now(), updatedAt: Date.now(),
+      },
+      {
+        id: uid(), title: 'Доска Pinterest: осенние образы',
+        platform: 'pinterest', priority: 'med', date: '',
+        column: 'shoot', notes: 'Подобрать референсы',
+        createdAt: Date.now(), updatedAt: Date.now(),
+      },
+    ];
+
+    state.collabs = [
+      { id: uid(), brand: 'Dior', nick: '@dior', status: 'waiting', createdAt: Date.now(), updatedAt: Date.now() },
+      { id: uid(), brand: 'Lancôme', nick: '@lancomeofficial', status: 'write', createdAt: Date.now(), updatedAt: Date.now() },
+    ];
+
+    state.perfumes = [
+      { id: uid(), brand: 'Chanel', name: 'Bleu de Chanel', status: 'in-stock', createdAt: Date.now(), updatedAt: Date.now() },
+      { id: uid(), brand: 'Tom Ford', name: 'Lost Cherry', status: 'need-shoot', createdAt: Date.now(), updatedAt: Date.now() },
+    ];
+
+    save();
+  }
+
+  render();
+  renderCollabs();
+  renderPerfumes();
+  renderStats();
+  switchView('board');
+}
+
+init();
+</script>
+</body>
+</html>
