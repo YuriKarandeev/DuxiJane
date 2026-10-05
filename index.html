@@ -41,7 +41,6 @@ body {
   -webkit-font-smoothing: antialiased;
 }
 
-/* ============ ШАПКА ============ */
 header {
   position: sticky;
   top: 0;
@@ -67,20 +66,8 @@ header {
   width: 10px; height: 10px; border-radius: 50%;
   background: linear-gradient(135deg, var(--accent), var(--accent-2));
 }
-.stats {
-  display: flex;
-  gap: 16px;
-  margin-left: auto;
-  font-size: 13px;
-  color: var(--text-muted);
-  white-space: nowrap;
-}
-.stats b { color: var(--text); font-weight: 600; }
-.stats .danger { color: #ff3b30; }
-
 .header-actions { display: flex; gap: 8px; }
 
-/* ============ КНОПКИ ============ */
 button {
   font-family: inherit;
   cursor: pointer;
@@ -117,7 +104,6 @@ button {
 }
 .btn-icon:hover { background: var(--bg-col); color: var(--text); }
 
-/* ============ ТАБЫ ============ */
 .tabs {
   display: flex;
   gap: 4px;
@@ -147,11 +133,9 @@ button {
   box-shadow: var(--shadow);
 }
 
-/* ============ ВИДЫ ============ */
 .view { display: none; }
 .view.active { display: block; }
 
-/* ============ ДОСКА ============ */
 .board-wrap {
   padding: 24px;
   overflow-x: auto;
@@ -202,7 +186,6 @@ button {
   min-height: 60px;
 }
 
-/* ============ КАРТОЧКА ============ */
 .card {
   background: var(--bg-elev);
   border-radius: var(--radius-sm);
@@ -278,7 +261,6 @@ button {
   opacity: .6;
 }
 
-/* ============ ТАБЛИЦЫ ============ */
 .table-wrap {
   padding: 24px;
   overflow-x: auto;
@@ -397,7 +379,6 @@ button {
   color: var(--text-muted);
 }
 
-/* ============ МОДАЛКА ============ */
 .modal-backdrop {
   position: fixed; inset: 0;
   background: rgba(0,0,0,.4);
@@ -469,378 +450,178 @@ button {
   justify-content: flex-end;
   margin-top: 24px;
 }
-/* ============ КАЛЕНДАРЬ ============ */
-.calendar-wrap {
-  padding: 24px;
-  max-width: 1200px;
-  margin: 0 auto;
-}
+
+.calendar-wrap { padding: 24px; max-width: 1200px; margin: 0 auto; }
 .calendar-header {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  margin-bottom: 20px;
-  gap: 16px;
-  flex-wrap: wrap;
+  display: flex; align-items: center; justify-content: space-between;
+  margin-bottom: 20px; gap: 16px; flex-wrap: wrap;
 }
-.calendar-nav {
-  display: flex;
-  align-items: center;
-  gap: 12px;
-}
+.calendar-nav { display: flex; align-items: center; gap: 12px; }
 .calendar-nav h2 {
-  font-size: 20px;
-  font-weight: 600;
-  letter-spacing: -0.02em;
-  min-width: 180px;
-  text-align: center;
-  text-transform: capitalize;
+  font-size: 20px; font-weight: 600; letter-spacing: -0.02em;
+  min-width: 180px; text-align: center; text-transform: capitalize;
 }
 .calendar-weekdays {
-  display: grid;
-  grid-template-columns: repeat(7, 1fr);
-  gap: 8px;
-  margin-bottom: 8px;
-  padding: 0 4px;
+  display: grid; grid-template-columns: repeat(7, 1fr);
+  gap: 8px; margin-bottom: 8px; padding: 0 4px;
 }
 .calendar-weekdays > div {
-  text-align: center;
-  font-size: 11px;
-  font-weight: 600;
-  text-transform: uppercase;
-  letter-spacing: .06em;
-  color: var(--text-muted);
-  padding: 6px 0;
+  text-align: center; font-size: 11px; font-weight: 600;
+  text-transform: uppercase; letter-spacing: .06em;
+  color: var(--text-muted); padding: 6px 0;
 }
-.calendar-grid {
-  display: grid;
-  grid-template-columns: repeat(7, 1fr);
-  gap: 8px;
-}
-
+.calendar-grid { display: grid; grid-template-columns: repeat(7, 1fr); gap: 8px; }
 .cal-day {
-  background: var(--bg-elev);
-  border: 1px solid var(--border);
-  border-radius: var(--radius-sm);
-  padding: 8px;
-  min-height: 110px;
-  display: flex;
-  flex-direction: column;
-  gap: 4px;
-  cursor: pointer;
-  transition: all .15s ease;
-  position: relative;
+  background: var(--bg-elev); border: 1px solid var(--border);
+  border-radius: var(--radius-sm); padding: 8px; min-height: 110px;
+  display: flex; flex-direction: column; gap: 4px;
+  cursor: pointer; transition: all .15s ease; position: relative;
 }
 .cal-day:hover { border-color: color-mix(in srgb, var(--accent) 40%, var(--border)); }
-.cal-day.empty {
-  background: transparent;
-  border: none;
-  cursor: default;
-  pointer-events: none;
-}
+.cal-day.empty { background: transparent; border: none; cursor: default; pointer-events: none; }
 .cal-day.today {
   border-color: var(--accent);
   box-shadow: 0 0 0 2px color-mix(in srgb, var(--accent) 20%, transparent);
 }
-.cal-day.weekend {
-  background: color-mix(in srgb, var(--bg-col) 50%, var(--bg-elev));
-}
-
-.cal-day-num {
-  font-size: 13px;
-  font-weight: 600;
-  color: var(--text-muted);
-  margin-bottom: 2px;
-}
-.cal-day.today .cal-day-num {
-  color: var(--accent);
-  font-weight: 700;
-}
-
+.cal-day.weekend { background: color-mix(in srgb, var(--bg-col) 50%, var(--bg-elev)); }
+.cal-day-num { font-size: 13px; font-weight: 600; color: var(--text-muted); margin-bottom: 2px; }
+.cal-day.today .cal-day-num { color: var(--accent); font-weight: 700; }
 .cal-task {
-  font-size: 11px;
-  padding: 4px 6px;
-  border-radius: 6px;
-  background: var(--bg-col);
-  border-left: 3px solid var(--border);
-  color: var(--text);
-  cursor: pointer;
-  line-height: 1.3;
-  overflow: hidden;
-  text-overflow: ellipsis;
-  display: -webkit-box;
-  -webkit-line-clamp: 2;
-  -webkit-box-orient: vertical;
-  transition: transform .12s ease, background .12s ease;
-  word-break: break-word;
+  font-size: 11px; padding: 4px 6px; border-radius: 6px;
+  background: var(--bg-col); border-left: 3px solid var(--border);
+  color: var(--text); cursor: pointer; line-height: 1.3;
+  overflow: hidden; text-overflow: ellipsis;
+  display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical;
+  transition: transform .12s ease, background .12s ease; word-break: break-word;
 }
-.cal-task:hover {
-  transform: translateX(2px);
-  background: color-mix(in srgb, var(--accent) 8%, var(--bg-col));
-}
+.cal-task:hover { transform: translateX(2px); background: color-mix(in srgb, var(--accent) 8%, var(--bg-col)); }
 .cal-task[data-platform="instagram"] { border-left-color: var(--accent); }
 .cal-task[data-platform="pinterest"] { border-left-color: var(--accent-2); }
 .cal-task[data-platform="both"]      { border-left-color: #8a2bbf; }
-.cal-task.overdue {
-  background: #ff3b3012;
-  color: #ff3b30;
-}
-.cal-task.published {
-  opacity: .5;
-  text-decoration: line-through;
-}
-
-.cal-more {
-  font-size: 10px;
-  color: var(--text-muted);
-  text-align: center;
-  padding: 2px;
-  font-weight: 500;
-}
+.cal-task.overdue { background: #ff3b3012; color: #ff3b30; }
+.cal-task.published { opacity: .5; text-decoration: line-through; }
 
 .calendar-legend {
-  display: flex;
-  gap: 20px;
-  flex-wrap: wrap;
-  margin-top: 20px;
-  padding: 0 4px;
-  font-size: 12px;
-  color: var(--text-muted);
+  display: flex; gap: 20px; flex-wrap: wrap; margin-top: 20px;
+  padding: 0 4px; font-size: 12px; color: var(--text-muted);
 }
-.legend-item {
-  display: inline-flex;
-  align-items: center;
-  gap: 6px;
-}
-.legend-dot {
-  width: 10px;
-  height: 10px;
-  border-radius: 3px;
-  display: inline-block;
-}
+.legend-item { display: inline-flex; align-items: center; gap: 6px; }
+.legend-dot { width: 10px; height: 10px; border-radius: 3px; display: inline-block; }
 
-@media (max-width: 860px) {
-  .calendar-wrap { padding: 16px; }
-  .cal-day { min-height: 80px; padding: 6px; }
-  .cal-task { font-size: 10px; padding: 3px 5px; }
-  .calendar-nav h2 { font-size: 16px; min-width: 140px; }
-  .calendar-weekdays > div { font-size: 10px; }
-}
-
-/* ============ ДАШБОРД ============ */
-.dash-wrap {
-  padding: 24px;
-  max-width: 1200px;
-  margin: 0 auto;
-}
+.dash-wrap { padding: 24px; max-width: 1200px; margin: 0 auto; }
 .dash-title {
-  display: flex;
-  align-items: baseline;
-  justify-content: space-between;
-  margin-bottom: 20px;
-  gap: 16px;
-  flex-wrap: wrap;
+  display: flex; align-items: baseline; justify-content: space-between;
+  margin-bottom: 20px; gap: 16px; flex-wrap: wrap;
 }
-.dash-title h2 {
-  font-size: 20px;
-  font-weight: 600;
-  letter-spacing: -0.02em;
-}
-.dash-sub {
-  font-size: 12px;
-  color: var(--text-muted);
-}
+.dash-title h2 { font-size: 20px; font-weight: 600; letter-spacing: -0.02em; }
+.dash-sub { font-size: 12px; color: var(--text-muted); }
 
-/* Метрики сверху */
 .dash-metrics {
-  display: grid;
-  grid-template-columns: repeat(4, 1fr);
-  gap: 12px;
-  margin-bottom: 20px;
+  display: grid; grid-template-columns: repeat(4, 1fr);
+  gap: 12px; margin-bottom: 20px;
 }
 .metric {
-  background: var(--bg-elev);
-  border: 1px solid var(--border);
-  border-radius: var(--radius);
-  padding: 16px 18px;
-  box-shadow: var(--shadow);
+  background: var(--bg-elev); border: 1px solid var(--border);
+  border-radius: var(--radius); padding: 16px 18px; box-shadow: var(--shadow);
 }
 .metric-label {
-  font-size: 11px;
-  font-weight: 600;
-  text-transform: uppercase;
-  letter-spacing: .04em;
-  color: var(--text-muted);
-  margin-bottom: 8px;
+  font-size: 11px; font-weight: 600; text-transform: uppercase;
+  letter-spacing: .04em; color: var(--text-muted); margin-bottom: 8px;
 }
 .metric-value {
-  font-size: 28px;
-  font-weight: 700;
-  letter-spacing: -0.02em;
+  font-size: 28px; font-weight: 700; letter-spacing: -0.02em;
   font-variant-numeric: tabular-nums;
 }
 .metric-value.danger { color: #ff3b30; }
 .metric-value.success { color: #34c759; }
 
-/* Сетка карточек */
-.dash-grid {
-  display: grid;
-  grid-template-columns: repeat(2, 1fr);
-  gap: 16px;
-}
+.dash-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 16px; }
 .dash-card {
-  background: var(--bg-elev);
-  border: 1px solid var(--border);
-  border-radius: var(--radius);
-  padding: 20px;
-  box-shadow: var(--shadow);
+  background: var(--bg-elev); border: 1px solid var(--border);
+  border-radius: var(--radius); padding: 20px; box-shadow: var(--shadow);
 }
 .dash-card-head {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  font-size: 14px;
-  font-weight: 600;
-  margin-bottom: 14px;
+  display: flex; align-items: center; justify-content: space-between;
+  font-size: 14px; font-weight: 600; margin-bottom: 14px;
 }
 .dash-count {
-  font-size: 12px;
-  font-weight: 500;
-  color: var(--text-muted);
-  background: var(--bg-col);
-  padding: 3px 10px;
-  border-radius: 8px;
+  font-size: 12px; font-weight: 500; color: var(--text-muted);
+  background: var(--bg-col); padding: 3px 10px; border-radius: 8px;
 }
-
-/* Прогресс-бар */
-.dash-progress {
-  display: flex;
-  align-items: center;
-  gap: 10px;
-  margin-bottom: 14px;
-}
-.dash-bar {
-  flex: 1;
-  height: 6px;
-  background: var(--bg-col);
-  border-radius: 3px;
-  overflow: hidden;
-}
+.dash-progress { display: flex; align-items: center; gap: 10px; margin-bottom: 14px; }
+.dash-bar { flex: 1; height: 6px; background: var(--bg-col); border-radius: 3px; overflow: hidden; }
 .dash-bar-fill {
-  height: 100%;
-  background: linear-gradient(90deg, var(--accent), var(--accent-2));
-  border-radius: 3px;
-  transition: width .35s ease;
+  height: 100%; background: linear-gradient(90deg, var(--accent), var(--accent-2));
+  border-radius: 3px; transition: width .35s ease;
 }
 .dash-pct {
-  font-size: 12px;
-  font-weight: 600;
-  color: var(--text-muted);
-  min-width: 40px;
-  text-align: right;
-  font-variant-numeric: tabular-nums;
+  font-size: 12px; font-weight: 600; color: var(--text-muted);
+  min-width: 40px; text-align: right; font-variant-numeric: tabular-nums;
 }
-
-/* Разбивка по статусам/колонкам */
-.dash-breakdown {
-  display: flex;
-  flex-direction: column;
-  gap: 6px;
-}
+.dash-breakdown { display: flex; flex-direction: column; gap: 6px; }
 .dash-row {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  font-size: 13px;
-  padding: 6px 0;
-  border-bottom: 1px solid var(--border);
+  display: flex; align-items: center; justify-content: space-between;
+  font-size: 13px; padding: 6px 0; border-bottom: 1px solid var(--border);
 }
 .dash-row:last-child { border-bottom: none; }
-.dash-row-label {
-  display: flex;
-  align-items: center;
-  gap: 8px;
-  color: var(--text);
-}
+.dash-row-label { display: flex; align-items: center; gap: 8px; color: var(--text); }
 .dash-row-label .dot {
-  width: 8px;
-  height: 8px;
-  border-radius: 50%;
-  background: var(--text-muted);
-  flex-shrink: 0;
+  width: 8px; height: 8px; border-radius: 50%;
+  background: var(--text-muted); flex-shrink: 0;
 }
-.dash-row-count {
-  font-weight: 600;
-  font-variant-numeric: tabular-nums;
-  color: var(--text-muted);
-}
+.dash-row-count { font-weight: 600; font-variant-numeric: tabular-nums; color: var(--text-muted); }
 .dash-row-count.zero { opacity: .4; }
 
-/* Ближайшие дедлайны */
-.dash-deadlines {
-  display: flex;
-  flex-direction: column;
-  gap: 8px;
-}
+.dash-deadlines { display: flex; flex-direction: column; gap: 8px; }
 .deadline-item {
-  display: flex;
-  align-items: center;
-  gap: 12px;
-  padding: 10px 12px;
-  background: var(--bg-col);
-  border-radius: var(--radius-sm);
-  border-left: 3px solid var(--border);
-  cursor: pointer;
-  transition: transform .12s ease, background .12s ease;
+  display: flex; align-items: center; gap: 12px;
+  padding: 10px 12px; background: var(--bg-col);
+  border-radius: var(--radius-sm); border-left: 3px solid var(--border);
+  cursor: pointer; transition: transform .12s ease, background .12s ease;
   font-size: 13px;
 }
-.deadline-item:hover {
-  transform: translateX(2px);
-  background: color-mix(in srgb, var(--accent) 6%, var(--bg-col));
-}
+.deadline-item:hover { transform: translateX(2px); background: color-mix(in srgb, var(--accent) 6%, var(--bg-col)); }
 .deadline-item[data-platform="instagram"] { border-left-color: var(--accent); }
 .deadline-item[data-platform="pinterest"] { border-left-color: var(--accent-2); }
 .deadline-item[data-platform="both"]      { border-left-color: #8a2bbf; }
 .deadline-item.overdue { background: #ff3b3012; }
 .deadline-date {
-  font-size: 11px;
-  font-weight: 600;
-  color: var(--text-muted);
-  min-width: 60px;
-  font-variant-numeric: tabular-nums;
+  font-size: 11px; font-weight: 600; color: var(--text-muted);
+  min-width: 60px; font-variant-numeric: tabular-nums;
 }
 .deadline-item.overdue .deadline-date { color: #ff3b30; }
 .deadline-title {
-  flex: 1;
-  overflow: hidden;
-  text-overflow: ellipsis;
-  white-space: nowrap;
+  flex: 1; overflow: hidden; text-overflow: ellipsis; white-space: nowrap;
 }
 
 .dash-empty {
-  text-align: center;
-  color: var(--text-muted);
-  font-size: 13px;
-  padding: 20px 0;
+  text-align: center; color: var(--text-muted);
+  font-size: 13px; padding: 20px 0;
 }
 
 @media (max-width: 860px) {
+  header { padding: 12px 16px; gap: 10px; flex-wrap: wrap; }
+  .tabs { order: 3; margin-left: 0; width: 100%; justify-content: center; overflow-x: auto; }
+  .board-wrap, .table-wrap { padding: 16px; }
+  .column { width: 260px; }
+  .logo span:not(.logo-dot) { display: none; }
+  .calendar-wrap { padding: 16px; }
+  .cal-day { min-height: 80px; padding: 6px; }
+  .cal-task { font-size: 10px; padding: 3px 5px; }
+  .calendar-nav h2 { font-size: 16px; min-width: 140px; }
+  .calendar-weekdays > div { font-size: 10px; }
   .dash-wrap { padding: 16px; }
   .dash-metrics { grid-template-columns: repeat(2, 1fr); }
   .dash-grid { grid-template-columns: 1fr; }
   .metric-value { font-size: 22px; }
 }
-
-/* ============ МОБИЛКА ============ */
-@media (max-width: 860px) {
-  header { padding: 12px 16px; gap: 10px; flex-wrap: wrap; }
-  .tabs { order: 3; margin-left: 0; width: 100%; justify-content: center; }
-  .stats { order: 4; width: 100%; justify-content: flex-start; font-size: 12px; margin-left: 0; }
-  .board-wrap, .table-wrap { padding: 16px; }
-  .column { width: 260px; }
-  .logo span:not(.logo-dot) { display: none; }
-}
 </style>
+
+<!-- ✅ Относительные пути для GitHub Pages в подпапке -->
+<link rel="manifest" href="manifest.webmanifest">
+<meta name="theme-color" content="#e1306c">
+<link rel="icon" type="image/png" href="icons/icon-192.png">
+<link rel="apple-touch-icon" href="icons/icon-192.png">
 </head>
 <body>
 
@@ -851,7 +632,7 @@ button {
   </div>
 
   <div class="tabs">
-    <button class="tab" data-view="calendar">📅 Календарь</button>    
+    <button class="tab" data-view="calendar">📅 Календарь</button>
     <button class="tab active" data-view="board">📋 Контент</button>
     <button class="tab" data-view="collabs">🤝 Сотрудничество</button>
     <button class="tab" data-view="perfumes">🌸 Ароматы</button>
@@ -949,8 +730,6 @@ button {
       <h2>📊 Дашборд</h2>
       <span class="dash-sub" id="dashUpdated"></span>
     </div>
-
-    <!-- Верхние карточки-метрики -->
     <div class="dash-metrics">
       <div class="metric">
         <div class="metric-label">Всего записей</div>
@@ -969,11 +748,7 @@ button {
         <div class="metric-value success" id="mPublished">0</div>
       </div>
     </div>
-
-    <!-- Сетка разделов -->
     <div class="dash-grid">
-
-      <!-- Контент -->
       <div class="dash-card">
         <div class="dash-card-head">
           <span>📋 Контент</span>
@@ -985,8 +760,6 @@ button {
         </div>
         <div class="dash-breakdown" id="dBreakCards"></div>
       </div>
-
-      <!-- Сотрудничество -->
       <div class="dash-card">
         <div class="dash-card-head">
           <span>🤝 Сотрудничество</span>
@@ -998,8 +771,6 @@ button {
         </div>
         <div class="dash-breakdown" id="dBreakCollabs"></div>
       </div>
-
-      <!-- Ароматы -->
       <div class="dash-card">
         <div class="dash-card-head">
           <span>🌸 Ароматы</span>
@@ -1011,15 +782,12 @@ button {
         </div>
         <div class="dash-breakdown" id="dBreakPerfumes"></div>
       </div>
-
-      <!-- Ближайшие дедлайны -->
       <div class="dash-card">
         <div class="dash-card-head">
           <span>⚠️ Ближайшие дедлайны</span>
         </div>
         <div class="dash-deadlines" id="dDeadlines"></div>
       </div>
-
     </div>
   </div>
 </div>
@@ -1030,7 +798,6 @@ button {
     <h2 id="modalTitle">Новая задача</h2>
     <input type="hidden" id="cardId">
 
-    <!-- КОНТЕНТ -->
     <div id="fieldsBoard">
       <div class="field">
         <label>Название</label>
@@ -1070,7 +837,6 @@ button {
       </div>
     </div>
 
-    <!-- СОТРУДНИЧЕСТВО -->
     <div id="fieldsCollab" style="display:none;">
       <div class="field">
         <label>Бренд</label>
@@ -1086,7 +852,6 @@ button {
       </div>
     </div>
 
-    <!-- АРОМАТЫ -->
     <div id="fieldsPerfume" style="display:none;">
       <div class="field">
         <label>Бренд</label>
@@ -1111,10 +876,11 @@ button {
 
 <input type="file" id="fileInput" accept=".json" style="display:none">
 
+<!-- ============================================================
+     ОСНОВНОЙ СКРИПТ (UI + логика)
+============================================================ -->
 <script>
-/* ============================================================
-   КОНФИГ
-============================================================ */
+/* ============ КОНФИГ ============ */
 const COLUMNS = [
   { id: 'ideas',     title: '💡 Идеи' },
   { id: 'script',    title: '✍️ Сценарий' },
@@ -1150,10 +916,9 @@ const PERFUME_STATUSES = [
 ];
 
 const STORAGE_KEY = 'blogger-planner-v1';
+const THEME_KEY = 'blogger-planner-theme';
 
-/* ============================================================
-   СОСТОЯНИЕ
-============================================================ */
+/* ============ СОСТОЯНИЕ ============ */
 let state = {
   cards: [], collabs: [], perfumes: [],
   theme: 'light',
@@ -1162,14 +927,11 @@ let state = {
 let currentView = 'board';
 let modalContext = 'board';
 
-// Состояние календаря
 const today = new Date();
 let calYear = today.getFullYear();
-let calMonth = today.getMonth(); // 0-11
+let calMonth = today.getMonth();
 
-/* ============================================================
-   УТИЛИТЫ
-============================================================ */
+/* ============ УТИЛИТЫ ============ */
 const $ = (s) => document.querySelector(s);
 const $$ = (s) => document.querySelectorAll(s);
 
@@ -1185,7 +947,7 @@ function todayISO() {
 
 function formatDate(iso) {
   if (!iso) return '';
-  const [y, m, d] = iso.split('-');
+  const [, m, d] = iso.split('-');
   const months = ['янв','фев','мар','апр','мая','июн','июл','авг','сен','окт','ноя','дек'];
   return `${parseInt(d)} ${months[parseInt(m) - 1]}`;
 }
@@ -1204,69 +966,57 @@ function escapeHtml(str) {
   return div.innerHTML;
 }
 
-/* ============================================================
-   ПЕРСИСТЕНТНОСТЬ
-============================================================ */
-function save() {
+/* ============ ПЕРСИСТЕНТНОСТЬ (локальный кэш темы) ============ */
+function saveLocalCache() {
   try {
+    // Кэшируем данные локально, чтобы при перезагрузке до загрузки из облака
+    // пользователь не видел пустоту. Облако всё равно перезапишет.
     localStorage.setItem(STORAGE_KEY, JSON.stringify(state));
-    // если дашборд открыт — обновим его
-    if (typeof currentView !== 'undefined' && currentView === 'dashboard') {
-      renderDashboard();
-    }
-  } catch (e) { console.warn('Save error:', e); }
+  } catch (e) { console.warn('Cache error:', e); }
 }
-function load() {
+
+function loadLocalCache() {
   try {
     const raw = localStorage.getItem(STORAGE_KEY);
-    if (!raw) return;
-    const data = JSON.parse(raw);
-    if (Array.isArray(data.cards))    state.cards = data.cards;
-    if (Array.isArray(data.collabs))  state.collabs = data.collabs;
-    if (Array.isArray(data.perfumes)) state.perfumes = data.perfumes;
-    if (data.theme) state.theme = data.theme;
-  } catch (e) { console.warn('Load error:', e); }
+    if (raw) {
+      const data = JSON.parse(raw);
+      if (Array.isArray(data.cards))    state.cards = data.cards;
+      if (Array.isArray(data.collabs))  state.collabs = data.collabs;
+      if (Array.isArray(data.perfumes)) state.perfumes = data.perfumes;
+    }
+    const theme = localStorage.getItem(THEME_KEY);
+    if (theme) state.theme = theme;
+  } catch (e) { console.warn('Cache load error:', e); }
 }
 
-/* ============================================================
-   ПЕРЕКЛЮЧЕНИЕ ВИДОВ
-============================================================ */
+/* ============ ПЕРЕКЛЮЧЕНИЕ ВИДОВ ============ */
 function switchView(view) {
   currentView = view;
-
   $$('.tab').forEach(t => t.classList.toggle('active', t.dataset.view === view));
   $$('.view').forEach(v => v.classList.remove('active'));
   $('#view-' + view).classList.add('active');
 
   const btn = $('#btnAdd');
-
-  // Скрываем кнопку на Календаре и Дашборде
   if (view === 'calendar' || view === 'dashboard') {
     btn.style.display = 'none';
   } else {
     btn.style.display = '';
   }
-
   if (view === 'board')    btn.textContent = '+ Задача';
   if (view === 'collabs')  btn.textContent = '+ Сотрудничество';
   if (view === 'perfumes') btn.textContent = '+ Аромат';
 
   if (view === 'calendar')  renderCalendar();
   if (view === 'dashboard') renderDashboard();
-
-  renderStats();
 }
 
-/* ============================================================
-   РЕНДЕР: ДОСКА
-============================================================ */
+/* ============ РЕНДЕР: ДОСКА ============ */
 function render() {
   const board = $('#board');
   board.innerHTML = '';
 
   COLUMNS.forEach(col => {
     const colCards = state.cards.filter(c => c.column === col.id);
-
     const colEl = document.createElement('div');
     colEl.className = 'column';
     colEl.dataset.column = col.id;
@@ -1277,7 +1027,6 @@ function render() {
       </div>
       <div class="column-body" data-column="${col.id}"></div>
     `;
-
     const body = colEl.querySelector('.column-body');
 
     if (colCards.length === 0) {
@@ -1300,14 +1049,11 @@ function render() {
     colEl.addEventListener('drop', (e) => {
       e.preventDefault();
       colEl.classList.remove('drag-over');
-      const cardId = e.dataTransfer.getData('text/plain');
-      moveCard(cardId, col.id);
+      moveCard(e.dataTransfer.getData('text/plain'), col.id);
     });
 
     board.appendChild(colEl);
   });
-
-  renderStats();
 }
 
 function renderCard(card) {
@@ -1356,9 +1102,7 @@ function renderCard(card) {
   return el;
 }
 
-/* ============================================================
-   РЕНДЕР: СОТРУДНИЧЕСТВО
-============================================================ */
+/* ============ РЕНДЕР: СОТРУДНИЧЕСТВО ============ */
 function renderCollabs() {
   const tbody = $('#collabsBody');
   tbody.innerHTML = '';
@@ -1390,15 +1134,13 @@ function renderCollabs() {
       </td>
     `;
 
-    const sel = tr.querySelector('.status-select');
-    sel.addEventListener('change', (e) => {
+    tr.querySelector('.status-select').addEventListener('change', async (e) => {
       const it = state.collabs.find(c => c.id === e.target.dataset.id);
       if (!it) return;
       it.status = e.target.value;
       it.updatedAt = Date.now();
-      save();
       renderCollabs();
-      renderStats();
+      if (window.saveCollab) await window.saveCollab(it);
     });
 
     tr.querySelector('[data-action="edit"]').addEventListener('click', () => openCollabModal(item.id));
@@ -1411,9 +1153,7 @@ function renderCollabs() {
   $('#collabsCounter').textContent = `${state.collabs.length} всего · ${published} выложено`;
 }
 
-/* ============================================================
-   РЕНДЕР: АРОМАТЫ
-============================================================ */
+/* ============ РЕНДЕР: АРОМАТЫ ============ */
 function renderPerfumes() {
   const tbody = $('#perfumesBody');
   tbody.innerHTML = '';
@@ -1445,15 +1185,13 @@ function renderPerfumes() {
       </td>
     `;
 
-    const sel = tr.querySelector('.status-select');
-    sel.addEventListener('change', (e) => {
+    tr.querySelector('.status-select').addEventListener('change', async (e) => {
       const it = state.perfumes.find(p => p.id === e.target.dataset.id);
       if (!it) return;
       it.status = e.target.value;
       it.updatedAt = Date.now();
-      save();
       renderPerfumes();
-      renderStats();
+      if (window.savePerfume) await window.savePerfume(it);
     });
 
     tr.querySelector('[data-action="edit"]').addEventListener('click', () => openPerfumeModal(item.id));
@@ -1462,13 +1200,11 @@ function renderPerfumes() {
     tbody.appendChild(tr);
   });
 
-  const published = state.perfumes.filter(p => p.status === 'published').length;
-  $('#perfumesCounter').textContent = `${state.perfumes.length} всего · ${published} выложено`;
+  const shot = state.perfumes.filter(p => p.status === 'shot').length;
+  $('#perfumesCounter').textContent = `${state.perfumes.length} всего · ${shot} снято`;
 }
 
-/* ============================================================
-   КАЛЕНДАРЬ
-============================================================ */
+/* ============ КАЛЕНДАРЬ ============ */
 const MONTH_NAMES = [
   'Январь','Февраль','Март','Апрель','Май','Июнь',
   'Июль','Август','Сентябрь','Октябрь','Ноябрь','Декабрь'
@@ -1482,64 +1218,47 @@ function renderCalendar() {
   title.textContent = `${MONTH_NAMES[calMonth]} ${calYear}`;
   grid.innerHTML = '';
 
-  // Первый день месяца (0 = воскресенье, но нам нужен понедельник как первый)
   const firstDay = new Date(calYear, calMonth, 1);
-  let startWeekday = firstDay.getDay(); // 0 = вс
-  startWeekday = startWeekday === 0 ? 6 : startWeekday - 1; // приводим к 0=пн
+  let startWeekday = firstDay.getDay();
+  startWeekday = startWeekday === 0 ? 6 : startWeekday - 1;
 
   const daysInMonth = new Date(calYear, calMonth + 1, 0).getDate();
-
   const todayStr = todayISO();
 
-  // Пустые ячейки до первого дня
   for (let i = 0; i < startWeekday; i++) {
     const empty = document.createElement('div');
     empty.className = 'cal-day empty';
     grid.appendChild(empty);
   }
 
-  // Ячейки дней
   for (let day = 1; day <= daysInMonth; day++) {
     const dateStr = `${calYear}-${String(calMonth + 1).padStart(2, '0')}-${String(day).padStart(2, '0')}`;
-
     const cell = document.createElement('div');
     cell.className = 'cal-day';
     if (dateStr === todayStr) cell.classList.add('today');
 
-    // выходной?
     const wd = new Date(calYear, calMonth, day).getDay();
     if (wd === 0 || wd === 6) cell.classList.add('weekend');
 
-    // номер дня
     const num = document.createElement('div');
     num.className = 'cal-day-num';
     num.textContent = day;
     cell.appendChild(num);
 
-    // задачи с этой датой
-    const tasks = state.cards.filter(c => c.date === dateStr);
-    tasks.forEach(task => {
+    state.cards.filter(c => c.date === dateStr).forEach(task => {
       const el = document.createElement('div');
       el.className = 'cal-task';
       el.dataset.platform = task.platform;
       el.textContent = task.title;
       el.title = task.title;
-
       if (task.column === 'published') el.classList.add('published');
       else if (dateStr < todayStr) el.classList.add('overdue');
-
-      el.addEventListener('click', (e) => {
-        e.stopPropagation();
-        openBoardModal(task.id);
-      });
-
+      el.addEventListener('click', (e) => { e.stopPropagation(); openBoardModal(task.id); });
       cell.appendChild(el);
     });
 
-    // Клик по пустой ячейке → новая задача с этой датой
     cell.addEventListener('click', () => {
       openBoardModal();
-      // подставляем дату
       setTimeout(() => {
         $('#fDate').value = dateStr;
         $('#fTitle').focus();
@@ -1555,13 +1274,11 @@ function calPrevMonth() {
   if (calMonth < 0) { calMonth = 11; calYear--; }
   renderCalendar();
 }
-
 function calNextMonth() {
   calMonth++;
   if (calMonth > 11) { calMonth = 0; calYear++; }
   renderCalendar();
 }
-
 function calGoToday() {
   const now = new Date();
   calYear = now.getFullYear();
@@ -1569,47 +1286,30 @@ function calGoToday() {
   renderCalendar();
 }
 
-/* ============================================================
-   СТАТИСТИКА (для дашборда)
-============================================================ */
+/* ============ ДАШБОРД ============ */
 function computeStats() {
   const todayStr = todayISO();
-
-  const total = state.cards.length + state.collabs.length + state.perfumes.length;
-
-  const publishedCards    = state.cards.filter(c => c.column === 'published').length;
-  const publishedCollabs  = state.collabs.filter(c => c.status === 'published').length;
-  const publishedPerfumes = state.perfumes.filter(p => p.status === 'published').length;
-  const published = publishedCards + publishedCollabs + publishedPerfumes;
-
+  const total = state.cards.length;
+  const published = state.cards.filter(c => c.column === 'published').length;
   const active = total - published;
-
   const overdue = state.cards.filter(c => {
     if (!c.date || c.column === 'published') return false;
     return c.date < todayStr;
   }).length;
-
   return { total, active, overdue, published };
 }
 
-/* ============================================================
-   ДАШБОРД
-============================================================ */
 function renderDashboard() {
   const s = computeStats();
-
-  // Верхние метрики
   $('#mTotal').textContent     = s.total;
   $('#mActive').textContent    = s.active;
   $('#mOverdue').textContent   = s.overdue;
   $('#mPublished').textContent = s.published;
 
-  // Время обновления
-  const now = new Date();
-  const timeStr = now.toLocaleTimeString('ru-RU', { hour: '2-digit', minute: '2-digit' });
+  const timeStr = new Date().toLocaleTimeString('ru-RU', { hour: '2-digit', minute: '2-digit' });
   $('#dashUpdated').textContent = `Обновлено в ${timeStr}`;
 
-  // ==== КОНТЕНТ ====
+  // Контент
   const totalCards = state.cards.length;
   const doneCards = state.cards.filter(c => c.column === 'published').length;
   const pctCards = totalCards ? Math.round((doneCards / totalCards) * 100) : 0;
@@ -1634,7 +1334,7 @@ function renderDashboard() {
     });
   }
 
-  // ==== СОТРУДНИЧЕСТВО ====
+  // Сотрудничество
   const totalCollabs = state.collabs.length;
   const doneCollabs = state.collabs.filter(c => c.status === 'published').length;
   const pctCollabs = totalCollabs ? Math.round((doneCollabs / totalCollabs) * 100) : 0;
@@ -1659,7 +1359,7 @@ function renderDashboard() {
     });
   }
 
-  // ==== АРОМАТЫ ====
+  // Ароматы
   const totalPerfumes = state.perfumes.length;
   const donePerfumes = state.perfumes.filter(p => p.status === 'shot').length;
   const pctPerfumes = totalPerfumes ? Math.round((donePerfumes / totalPerfumes) * 100) : 0;
@@ -1684,7 +1384,7 @@ function renderDashboard() {
     });
   }
 
-  // ==== БЛИЖАЙШИЕ ДЕДЛАЙНЫ ====
+  // Дедлайны
   const todayStr = todayISO();
   const upcoming = state.cards
     .filter(c => c.date && c.column !== 'published')
@@ -1701,7 +1401,6 @@ function renderDashboard() {
       el.className = 'deadline-item';
       el.dataset.platform = card.platform;
       if (card.date < todayStr) el.classList.add('overdue');
-
       el.innerHTML = `
         <span class="deadline-date">${formatDate(card.date)}</span>
         <span class="deadline-title">${escapeHtml(card.title)}</span>
@@ -1712,97 +1411,78 @@ function renderDashboard() {
   }
 }
 
-// Оставляем заглушку для обратной совместимости (в шапке больше нет счётчиков)
-function renderStats() {
-  // ничего не делает, оставлено чтобы не переписывать вызовы
-}
-
-/* ============================================================
-   ОПЕРАЦИИ: КОНТЕНТ
-============================================================ */
-function moveCard(cardId, newColumn) {
+/* ============ ОПЕРАЦИИ: КОНТЕНТ ============ */
+async function moveCard(cardId, newColumn) {
   const card = state.cards.find(c => c.id === cardId);
   if (!card || card.column === newColumn) return;
   card.column = newColumn;
   card.updatedAt = Date.now();
-  save();
   render();
-  if (currentView === 'calendar') renderCalendar();
+  if (window.saveCard) await window.saveCard(card);
 }
 
-function deleteCard(cardId) {
+async function deleteCard(cardId) {
   const card = state.cards.find(c => c.id === cardId);
   if (!card) return;
   if (!confirm(`Удалить «${card.title}»?`)) return;
   state.cards = state.cards.filter(c => c.id !== cardId);
-  save();
   render();
-  if (currentView === 'calendar') renderCalendar();
+  if (window.deleteCardCloud) await window.deleteCardCloud(cardId);
 }
 
-function duplicateCard(cardId) {
+async function duplicateCard(cardId) {
   const card = state.cards.find(c => c.id === cardId);
   if (!card) return;
-  state.cards.push({
+  const copy = {
     ...card,
     id: uid(),
     title: card.title + ' (копия)',
     createdAt: Date.now(),
     updatedAt: Date.now(),
-  });
-  save();
+  };
+  state.cards.push(copy);
   render();
+  if (window.saveCard) await window.saveCard(copy);
 }
 
-/* ============================================================
-   ОПЕРАЦИИ: СОТРУДНИЧЕСТВО
-============================================================ */
-function deleteCollab(id) {
+/* ============ ОПЕРАЦИИ: СОТРУДНИЧЕСТВО ============ */
+async function deleteCollab(id) {
   const item = state.collabs.find(c => c.id === id);
   if (!item) return;
-  if (!confirm(`Удалить сотрудничество с «${item.brand}»?`)) return;
+  if (!confirm(`Удалить «${item.brand}»?`)) return;
   state.collabs = state.collabs.filter(c => c.id !== id);
-  save();
   renderCollabs();
-  renderStats();
+  if (window.deleteCollabCloud) await window.deleteCollabCloud(id);
 }
 
-/* ============================================================
-   ОПЕРАЦИИ: АРОМАТЫ
-============================================================ */
-function deletePerfume(id) {
+/* ============ ОПЕРАЦИИ: АРОМАТЫ ============ */
+async function deletePerfume(id) {
   const item = state.perfumes.find(p => p.id === id);
   if (!item) return;
   if (!confirm(`Удалить «${item.brand} — ${item.name}»?`)) return;
   state.perfumes = state.perfumes.filter(p => p.id !== id);
-  save();
   renderPerfumes();
-  renderStats();
+  // ✅ ИСПРАВЛЕНО: было deleteCollabCloud
+  if (window.deletePerfumeCloud) await window.deletePerfumeCloud(id);
 }
 
-/* ============================================================
-   МОДАЛКА
-============================================================ */
+/* ============ МОДАЛКА ============ */
 const modal = $('#modal');
 
 function fillColumnSelect() {
-  const sel = $('#fColumn');
-  sel.innerHTML = COLUMNS.map(c => `<option value="${c.id}">${c.title}</option>`).join('');
+  $('#fColumn').innerHTML = COLUMNS.map(c => `<option value="${c.id}">${c.title}</option>`).join('');
 }
-
 function fillStatusSelect(selectEl, statuses, currentId) {
   selectEl.innerHTML = statuses
     .map(s => `<option value="${s.id}" ${s.id === currentId ? 'selected' : ''}>${s.label}</option>`)
     .join('');
 }
-
 function showModalFields(context) {
   $('#fieldsBoard').style.display   = context === 'board'    ? 'block' : 'none';
   $('#fieldsCollab').style.display  = context === 'collabs'  ? 'block' : 'none';
   $('#fieldsPerfume').style.display = context === 'perfumes' ? 'block' : 'none';
 }
 
-/* ---- Контент ---- */
 function openBoardModal(cardId = null) {
   modalContext = 'board';
   fillColumnSelect();
@@ -1834,57 +1514,47 @@ function openBoardModal(cardId = null) {
   setTimeout(() => $('#fTitle').focus(), 50);
 }
 
-/* ---- Сотрудничество ---- */
 function openCollabModal(id = null) {
   modalContext = 'collabs';
   const item = id ? state.collabs.find(c => c.id === id) : null;
-
   $('#modalTitle').textContent = item ? 'Редактировать сотрудничество' : 'Новое сотрудничество';
   $('#cardId').value = item ? item.id : '';
   $('#cBrand').value = item ? item.brand : '';
   $('#cNick').value  = item ? item.nick  : '';
   fillStatusSelect($('#cStatus'), COLLAB_STATUSES, item ? item.status : 'write');
-
   showModalFields('collabs');
   modal.classList.add('open');
   setTimeout(() => $('#cBrand').focus(), 50);
 }
 
-/* ---- Ароматы ---- */
 function openPerfumeModal(id = null) {
   modalContext = 'perfumes';
   const item = id ? state.perfumes.find(p => p.id === id) : null;
-
   $('#modalTitle').textContent = item ? 'Редактировать аромат' : 'Новый аромат';
   $('#cardId').value = item ? item.id : '';
   $('#pBrand').value = item ? item.brand : '';
   $('#pName').value  = item ? item.name  : '';
   fillStatusSelect($('#pStatus'), PERFUME_STATUSES, item ? item.status : 'in-stock');
-
   showModalFields('perfumes');
   modal.classList.add('open');
   setTimeout(() => $('#pBrand').focus(), 50);
 }
 
-/* ---- Общее ---- */
 function closeModal() { modal.classList.remove('open'); }
-
 function flashInvalid(input) {
   input.focus();
   input.style.borderColor = '#ff3b30';
   setTimeout(() => input.style.borderColor = '', 1200);
 }
-
 function saveFromModal() {
   if (modalContext === 'board')    return saveBoardFromModal();
   if (modalContext === 'collabs')  return saveCollabFromModal();
   if (modalContext === 'perfumes') return savePerfumeFromModal();
 }
 
-function saveBoardFromModal() {
-  const fTitle = $('#fTitle');
-  const title = fTitle.value.trim();
-  if (!title) return flashInvalid(fTitle);
+async function saveBoardFromModal() {
+  const title = $('#fTitle').value.trim();
+  if (!title) return flashInvalid($('#fTitle'));
 
   const id = $('#cardId').value;
   const payload = {
@@ -1896,20 +1566,21 @@ function saveBoardFromModal() {
     notes:    $('#fNotes').value.trim(),
   };
 
+  let card;
   if (id) {
-    const card = state.cards.find(c => c.id === id);
-    if (card) Object.assign(card, payload, { updatedAt: Date.now() });
+    card = state.cards.find(c => c.id === id);
+    Object.assign(card, payload, { updatedAt: Date.now() });
   } else {
-    state.cards.push({ id: uid(), ...payload, createdAt: Date.now(), updatedAt: Date.now() });
+    card = { id: uid(), ...payload, createdAt: Date.now(), updatedAt: Date.now() };
+    state.cards.push(card);
   }
 
-  save();
   render();
-  if (currentView === 'calendar') renderCalendar();
   closeModal();
+  if (window.saveCard) await window.saveCard(card);
 }
 
-function saveCollabFromModal() {
+async function saveCollabFromModal() {
   const brandEl = $('#cBrand');
   const brand = brandEl.value.trim();
   if (!brand) return flashInvalid(brandEl);
@@ -1921,20 +1592,22 @@ function saveCollabFromModal() {
     status: $('#cStatus').value,
   };
 
+  // ✅ ИСПРАВЛЕНО: сохраняем в переменную и шлём в облако её
+  let item;
   if (id) {
-    const it = state.collabs.find(c => c.id === id);
-    if (it) Object.assign(it, payload, { updatedAt: Date.now() });
+    item = state.collabs.find(c => c.id === id);
+    Object.assign(item, payload, { updatedAt: Date.now() });
   } else {
-    state.collabs.push({ id: uid(), ...payload, createdAt: Date.now(), updatedAt: Date.now() });
+    item = { id: uid(), ...payload, createdAt: Date.now(), updatedAt: Date.now() };
+    state.collabs.push(item);
   }
 
-  save();
   renderCollabs();
-  renderStats();
   closeModal();
+  if (window.saveCollab) await window.saveCollab(item);
 }
 
-function savePerfumeFromModal() {
+async function savePerfumeFromModal() {
   const brandEl = $('#pBrand');
   const brand = brandEl.value.trim();
   if (!brand) return flashInvalid(brandEl);
@@ -1950,36 +1623,33 @@ function savePerfumeFromModal() {
     status: $('#pStatus').value,
   };
 
+  // ✅ ИСПРАВЛЕНО: сохраняем в переменную и шлём правильной функцией
+  let item;
   if (id) {
-    const it = state.perfumes.find(p => p.id === id);
-    if (it) Object.assign(it, payload, { updatedAt: Date.now() });
+    item = state.perfumes.find(p => p.id === id);
+    Object.assign(item, payload, { updatedAt: Date.now() });
   } else {
-    state.perfumes.push({ id: uid(), ...payload, createdAt: Date.now(), updatedAt: Date.now() });
+    item = { id: uid(), ...payload, createdAt: Date.now(), updatedAt: Date.now() };
+    state.perfumes.push(item);
   }
 
-  save();
   renderPerfumes();
-  renderStats();
   closeModal();
+  if (window.savePerfume) await window.savePerfume(item);
 }
 
-/* ============================================================
-   ТЕМА
-============================================================ */
+/* ============ ТЕМА ============ */
 function applyTheme() {
   document.documentElement.setAttribute('data-theme', state.theme);
   $('#btnTheme').textContent = state.theme === 'dark' ? '☀️' : '🌙';
 }
-
 function toggleTheme() {
   state.theme = state.theme === 'dark' ? 'light' : 'dark';
   applyTheme();
-  save();
+  localStorage.setItem(THEME_KEY, state.theme);
 }
 
-/* ============================================================
-   ЭКСПОРТ / ИМПОРТ
-============================================================ */
+/* ============ ЭКСПОРТ / ИМПОРТ ============ */
 function exportJSON() {
   const dataStr = JSON.stringify(state, null, 2);
   const blob = new Blob([dataStr], { type: 'application/json' });
@@ -1992,9 +1662,9 @@ function exportJSON() {
   URL.revokeObjectURL(url);
 }
 
-function importJSON(file) {
+async function importJSON(file) {
   const reader = new FileReader();
-  reader.onload = (e) => {
+  reader.onload = async (e) => {
     try {
       const data = JSON.parse(e.target.result);
       if (!data.cards && !data.collabs && !data.perfumes) throw new Error('Пустой или неверный файл');
@@ -2012,12 +1682,20 @@ function importJSON(file) {
       state.perfumes = Array.isArray(data.perfumes) ? data.perfumes : [];
       if (data.theme) state.theme = data.theme;
 
-      save();
       applyTheme();
       render();
       renderCollabs();
       renderPerfumes();
-      renderStats();
+
+      // Отправляем в облако
+      if (window.saveCard && window.saveCollab && window.savePerfume) {
+        await Promise.all([
+          ...state.cards.map(c => window.saveCard(c)),
+          ...state.collabs.map(c => window.saveCollab(c)),
+          ...state.perfumes.map(p => window.savePerfume(p)),
+        ]);
+      }
+
       alert('Импорт завершён ✅');
     } catch (err) {
       alert('Ошибка импорта: ' + err.message);
@@ -2026,9 +1704,7 @@ function importJSON(file) {
   reader.readAsText(file);
 }
 
-/* ============================================================
-   СОБЫТИЯ
-============================================================ */
+/* ============ СОБЫТИЯ ============ */
 $$('.tab').forEach(tab => {
   tab.addEventListener('click', () => switchView(tab.dataset.view));
 });
@@ -2062,6 +1738,7 @@ document.addEventListener('keydown', (e) => {
     saveFromModal();
   }
   if (e.key.toLowerCase() === 'n' && !modal.classList.contains('open')) {
+    if (currentView === 'calendar' || currentView === 'dashboard') return;
     const tag = document.activeElement.tagName;
     if (tag !== 'INPUT' && tag !== 'TEXTAREA' && tag !== 'SELECT') {
       e.preventDefault();
@@ -2070,58 +1747,251 @@ document.addEventListener('keydown', (e) => {
   }
 });
 
-// Календарь
 $('#calPrev').addEventListener('click', calPrevMonth);
 $('#calNext').addEventListener('click', calNextMonth);
 $('#calToday').addEventListener('click', calGoToday);
 
-/* ============================================================
-   ИНИЦИАЛИЗАЦИЯ
-============================================================ */
-function init() {
-  load();
-  applyTheme();
+/* ============ ЭКСПОРТ В ГЛОБАЛЬНЫЙ СКОУП ============ */
+// Нужно, чтобы Firebase-модуль мог вызывать эти функции
+window.render            = render;
+window.renderCollabs     = renderCollabs;
+window.renderPerfumes    = renderPerfumes;
+window.renderCalendar    = renderCalendar;
+window.renderDashboard   = renderDashboard;
+window.switchView        = switchView;
+window.applyTheme        = applyTheme;
+window.getCurrentView    = () => currentView;
+window.getState          = () => state;
+window.setStateData      = (data) => {
+  if (Array.isArray(data.cards))    state.cards = data.cards;
+  if (Array.isArray(data.collabs))  state.collabs = data.collabs;
+  if (Array.isArray(data.perfumes)) state.perfumes = data.perfumes;
+};
+window.loadLocalCache    = loadLocalCache;
+window.saveLocalCache    = saveLocalCache;
 
-  // Демо-данные при пустой базе
-  if (state.cards.length === 0 && state.collabs.length === 0 && state.perfumes.length === 0) {
-    const t = todayISO();
+/* ============ ИНИЦИАЛИЗАЦИЯ UI ============ */
+// НЕ запускаем демо-данные тут — этим занимается Firebase-модуль
+loadLocalCache();
+applyTheme();
+render();
+renderCollabs();
+renderPerfumes();
+switchView('board');
+</script>
 
-    state.cards = [
-      {
-        id: uid(), title: 'Reels: 3 утренние привычки',
-        platform: 'instagram', priority: 'high', date: t,
-        column: 'ideas', notes: 'Хук: "Ты делаешь это неправильно..."',
-        createdAt: Date.now(), updatedAt: Date.now(),
-      },
-      {
-        id: uid(), title: 'Доска Pinterest: осенние образы',
-        platform: 'pinterest', priority: 'med', date: '',
-        column: 'shoot', notes: 'Подобрать референсы',
-        createdAt: Date.now(), updatedAt: Date.now(),
-      },
-    ];
+<!-- ============================================================
+     FIREBASE-МОДУЛЬ
+============================================================ -->
+<script type="module">
+import { initializeApp } from 'https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js';
+import {
+  getFirestore, collection, doc, getDocs, getDoc,
+  setDoc, deleteDoc, onSnapshot
+} from 'https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js';
 
-    state.collabs = [
-      { id: uid(), brand: 'Dior', nick: '@dior', status: 'waiting', createdAt: Date.now(), updatedAt: Date.now() },
-      { id: uid(), brand: 'Lancôme', nick: '@lancomeofficial', status: 'write', createdAt: Date.now(), updatedAt: Date.now() },
-    ];
+/* ========== ⚠️ ЗАМЕНИ НА СВОЙ КОНФИГ ========== */
+const firebaseConfig = {
+  apiKey: "AIzaSyAdQcQ77foUDti1ScXaaozC98HBB8_955Y",
+  authDomain: "janeplan-237d4.firebaseapp.com",
+  projectId: "janeplan-237d4",
+  storageBucket: "janeplan-237d4.firebasestorage.app",
+  messagingSenderId: "1062501394307",
+  appId: "1:1062501394307:web:8d349d7715070b4c7b78b6"
+};
 
-    state.perfumes = [
-      { id: uid(), brand: 'Chanel', name: 'Bleu de Chanel', status: 'in-stock', createdAt: Date.now(), updatedAt: Date.now() },
-      { id: uid(), brand: 'Tom Ford', name: 'Lost Cherry', status: 'need-shoot', createdAt: Date.now(), updatedAt: Date.now() },
-    ];
+const app = initializeApp(firebaseConfig);
+const db = getFirestore(app);
 
-    save();
+/* ========== КЛЮЧ ДОСТУПА ========== */
+const KEY_STORAGE = 'blogger-planner-access-key';
+
+function getOrCreateAccessKey() {
+  let key = localStorage.getItem(KEY_STORAGE);
+  if (!key) {
+    key = crypto.randomUUID();
+    localStorage.setItem(KEY_STORAGE, key);
   }
-
-  render();
-  renderCollabs();
-  renderPerfumes();
-  renderStats();
-  switchView('board');
+  return key;
 }
 
-init();
+function setAccessKey(key) {
+  const cleaned = key.trim();
+  if (cleaned.length < 16) {
+    alert('Ключ слишком короткий');
+    return false;
+  }
+  localStorage.setItem(KEY_STORAGE, cleaned);
+  location.reload();
+  return true;
+}
+
+const accessKey = getOrCreateAccessKey();
+console.log('🔑 Access key:', accessKey);
+
+/* ========== ПУТИ ========== */
+function paths() {
+  const base = ['planners', accessKey];
+  return {
+    cards:    collection(db, ...base, 'cards'),
+    collabs:  collection(db, ...base, 'collabs'),
+    perfumes: collection(db, ...base, 'perfumes'),
+    card:     (id) => doc(db, ...base, 'cards', id),
+    collab:   (id) => doc(db, ...base, 'collabs', id),
+    perfume:  (id) => doc(db, ...base, 'perfumes', id),
+    meta:     doc(db, ...base, 'meta', 'info'),
+  };
+}
+
+/* ========== ОПЕРАЦИИ ========== */
+async function saveCard(card)    { await setDoc(paths().card(card.id), card); }
+async function saveCollab(item)  { await setDoc(paths().collab(item.id), item); }
+async function savePerfume(item) { await setDoc(paths().perfume(item.id), item); }
+async function deleteCardCloud(id)    { await deleteDoc(paths().card(id)); }
+async function deleteCollabCloud(id)  { await deleteDoc(paths().collab(id)); }
+async function deletePerfumeCloud(id) { await deleteDoc(paths().perfume(id)); }
+
+/* ========== ЗАГРУЗКА ИЗ ОБЛАКА ========== */
+async function loadAllFromCloud() {
+  try {
+    const p = paths();
+    const [cardsSnap, collabsSnap, perfumesSnap] = await Promise.all([
+      getDocs(p.cards),
+      getDocs(p.collabs),
+      getDocs(p.perfumes),
+    ]);
+
+    const cards    = cardsSnap.docs.map(d => ({ id: d.id, ...d.data() }));
+    const collabs  = collabsSnap.docs.map(d => ({ id: d.id, ...d.data() }));
+    const perfumes = perfumesSnap.docs.map(d => ({ id: d.id, ...d.data() }));
+
+    // Проверяем первый ли запуск
+    const isEmpty = cards.length === 0 && collabs.length === 0 && perfumes.length === 0;
+    const metaSnap = await getDoc(p.meta);
+    const isFirstTime = !metaSnap.exists();
+
+    if (isEmpty && isFirstTime) {
+      // Первый запуск — предложим перенести из localStorage
+      const localData = JSON.parse(localStorage.getItem('blogger-planner-v1') || '{}');
+      const hasLocal = (localData.cards?.length || 0) + (localData.collabs?.length || 0) + (localData.perfumes?.length || 0) > 0;
+
+      if (hasLocal) {
+        if (confirm('В облаке пусто. Перенести локальные данные в облако?')) {
+          await Promise.all([
+            ...(localData.cards    || []).map(saveCard),
+            ...(localData.collabs  || []).map(saveCollab),
+            ...(localData.perfumes || []).map(savePerfume),
+          ]);
+          // Перечитаем после переноса
+          return loadAllFromCloud();
+        }
+      }
+      // Первый запуск без локальных данных — просто метка
+      await setDoc(p.meta, { createdAt: Date.now(), version: 1 });
+    }
+
+    // Обновляем глобальный state и рендерим
+    window.setStateData({ cards, collabs, perfumes });
+    window.render();
+    window.renderCollabs();
+    window.renderPerfumes();
+    if (window.getCurrentView() === 'calendar')  window.renderCalendar();
+    if (window.getCurrentView() === 'dashboard') window.renderDashboard();
+
+    // Обновляем локальный кэш
+    window.saveLocalCache();
+
+    console.log('✅ Данные загружены из облака:', { cards: cards.length, collabs: collabs.length, perfumes: perfumes.length });
+  } catch (e) {
+    console.error('Ошибка загрузки из облака:', e);
+    alert('Не удалось загрузить данные: ' + e.message);
+  }
+}
+
+/* ========== REAL-TIME СИНХРОНИЗАЦИЯ ========== */
+function subscribeToCloud() {
+  const p = paths();
+
+  onSnapshot(p.cards, (snap) => {
+    const cards = snap.docs.map(d => ({ id: d.id, ...d.data() }));
+    window.setStateData({ cards });
+    window.render();
+    if (window.getCurrentView() === 'calendar')  window.renderCalendar();
+    if (window.getCurrentView() === 'dashboard') window.renderDashboard();
+    window.saveLocalCache();
+  });
+
+  onSnapshot(p.collabs, (snap) => {
+    const collabs = snap.docs.map(d => ({ id: d.id, ...d.data() }));
+    window.setStateData({ collabs });
+    window.renderCollabs();
+    if (window.getCurrentView() === 'dashboard') window.renderDashboard();
+    window.saveLocalCache();
+  });
+
+  onSnapshot(p.perfumes, (snap) => {
+    const perfumes = snap.docs.map(d => ({ id: d.id, ...d.data() }));
+    window.setStateData({ perfumes });
+    window.renderPerfumes();
+    if (window.getCurrentView() === 'dashboard') window.renderDashboard();
+    window.saveLocalCache();
+  });
+}
+
+/* ========== КНОПКА КЛЮЧА В ШАПКЕ ========== */
+function setupKeyUI() {
+  const btn = document.createElement('button');
+  btn.className = 'btn-ghost';
+  btn.id = 'btnKey';
+  btn.title = 'Ключ синхронизации';
+  btn.textContent = '🔑';
+  btn.style.fontSize = '16px';
+  document.querySelector('.header-actions').prepend(btn);
+
+  btn.addEventListener('click', () => {
+    const currentKey = localStorage.getItem(KEY_STORAGE);
+    const input = prompt(
+      'Ключ синхронизации.\n\n' +
+      'Скопируй его на другое устройство, чтобы увидеть те же данные.\n' +
+      'НЕ передавай никому — это доступ ко всем твоим данным.\n\n' +
+      'Оставь как есть или введи другой ключ:',
+      currentKey
+    );
+    if (input && input.trim() !== currentKey) {
+      setAccessKey(input);
+    }
+  });
+}
+
+/* ========== СТАРТ ========== */
+(async () => {
+  setupKeyUI();
+  await loadAllFromCloud();
+  subscribeToCloud();
+})();
+
+// Пробрасываем в глобальный скоуп
+window.saveCard          = saveCard;
+window.saveCollab        = saveCollab;
+window.savePerfume       = savePerfume;
+window.deleteCardCloud   = deleteCardCloud;
+window.deleteCollabCloud = deleteCollabCloud;
+window.deletePerfumeCloud = deletePerfumeCloud;
+window.setAccessKey      = setAccessKey;
+</script>
+
+<!-- ============================================================
+     SERVICE WORKER
+============================================================ -->
+<script>
+if ('serviceWorker' in navigator) {
+  window.addEventListener('load', () => {
+    // ✅ Относительный путь для GitHub Pages в подпапке
+    navigator.serviceWorker.register('sw.js')
+      .then((reg) => console.log('SW OK:', reg.scope))
+      .catch((err) => console.warn('SW ошибка:', err));
+  });
+}
 </script>
 </body>
 </html>
